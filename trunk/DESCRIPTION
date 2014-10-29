@@ -1,0 +1,15 @@
+Package: R2rflow
+Type: Package
+Title: R Code Converter to rflow (xml) format
+Version: 1.2
+Date: 2013-12-13
+Author: Lukasz Daniel <lukasz.daniel@gmail.com>
+Maintainer: Lukasz Daniel <lukasz.daniel@gmail.com>
+Description: This package provides a function R2rflow() to convert R code
+    into a rflow (xml) file (see: RAnalyticFlow,
+    http://www.ef-prime.com/products/ranalyticflow_en/). Comments in R code are
+    not preserved during convertion.
+Depends:
+    codetools
+License: GPL-3
+Packaged: 2014-07-29 14:05:43 UTC; luki
