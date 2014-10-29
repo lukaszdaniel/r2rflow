@@ -1,0 +1,584 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE rflow [
+<!ENTITY lt "&#38;#60;">
+<!ENTITY gt "&#62;">
+<!ENTITY amp "&#38;#38;">
+<!ENTITY apos "&#39;">
+<!ENTITY quot "&#34;">
+]>
+<rflow>
+ <graph version="0.3" width="894" height="742" locationtype="a" offsetx="0" offsety="0">
+  <setting>
+   <entry key="OUTPUT_DIRECTORY"></entry>
+   <entry key="SAVE_CACHE">false</entry>
+   <entry key="FONT_SCREEN">monospace</entry>
+   <entry key="TEXT_ENCODING">UTF-8</entry>
+   <entry key="LOAD_CACHE">false</entry>
+   <entry key="IGNORE_ERROR">false</entry>
+   <entry key="SAVE_WORKSPACE"></entry>
+   <entry key="OUTPUT_REPORT">true</entry>
+   <entry key="RUN_TYPE">2</entry>
+   <entry key="OUTPUT_ITEMS">script</entry>
+   <entry key="USE_GRID">true</entry>
+   <entry key="REPORT_TYPES">pdf,html</entry>
+   <entry key="FOLDER">empty</entry>
+   <entry key="GRID_DISTANCE2">10</entry>
+   <entry key="IMAGE_SIZE">480,480</entry>
+   <entry key="FONT_OTHER">sans-serif</entry>
+  </setting>
+<node id="1" x="440" y="80">
+ <command>str &lt;- function(object, ...) UseMethod(&quot;str&quot;)</command>
+ <property/>
+ <option type="com.ef_prime.rflow.node.base.FunctionNodeModel">
+  <entry key="function">str</entry>
+  <entry key="args">(object , ... )</entry>
+  <subflow>
+   <graph version="0.3" width="688" height="700" locationtype="a" offsetx="0" offsety="0">
+<node id="2" x="440" y="80">
+ <command></command>
+ <property/>
+ <option type="com.ef_prime.rflow.node.base.TunnelNodeModel">
+  <entry key="io">in</entry>
+ </option>
+</node>
+<node id="3" x="440" y="160">
+ <command>UseMethod(&quot;str&quot;)</command>
+ <property/>
+ <option type="com.ef_prime.rflow.node.base.FreeNodeModel"/>
+</node>
+<node id="4" x="440" y="240">
+ <command></command>
+ <property/>
+ <option type="com.ef_prime.rflow.node.base.TunnelNodeModel">
+  <entry key="io">out</entry>
+ </option>
+</node>
+<edge from="2" to="3"/>
+<edge from="3" to="4"/>
+   </graph>
+  </subflow>
+ </option>
+</node>
+<node id="5" x="440" y="160">
+ <command>if (length(larg &lt;- list(...))) {
+    nl &lt;- names(larg)
+    iGiveHead &lt;- which(nl == &quot;give.head&quot;)
+    if (any(Bgl &lt;- nl == &quot;give.length&quot;)) 
+        give.length &lt;- larg[[which(Bgl)]]
+    else if (length(iGiveHead)) 
+        give.length &lt;- larg[[iGiveHead]]
+    if (length(iGiveHead)) 
+        larg &lt;- larg[-iGiveHead]
+    if (is.numeric(larg[[&quot;nest.lev&quot;]]) &amp;&amp; is.numeric(larg[[&quot;vec.len&quot;]])) 
+        larg[[&quot;vec.len&quot;]] &lt;- min(larg[[&quot;vec.len&quot;]], (larg[[&quot;width&quot;]] - nchar(larg[[&quot;indent.str&quot;]]) - 31)%/%19)
+}</command>
+ <property/>
+ <option type="com.ef_prime.rflow.node.base.IfNodeModel">
+  <entry key="condition">length(larg &lt;- list(...))</entry>
+<subflow>
+ <graph version="0.3" width="688" height="700" locationtype="a" offsetx="0" offsety="0">
+<node id="6" x="440" y="80">
+ <command></command>
+ <property/>
+ <option type="com.ef_prime.rflow.node.base.TunnelNodeModel">
+  <entry key="io">in</entry>
+ </option>
+</node>
+<node id="7" x="440" y="160">
+ <command>nl &lt;- names(larg)</command>
+ <property/>
+ <option type="com.ef_prime.rflow.node.base.FreeNodeModel"/>
+</node>
+<node id="8" x="440" y="240">
+ <command>iGiveHead &lt;- which(nl == &quot;give.head&quot;)</command>
+ <property/>
+ <option type="com.ef_prime.rflow.node.base.FreeNodeModel"/>
+</node>
+<node id="9" x="440" y="320">
+ <command>if (any(Bgl &lt;- nl == &quot;give.length&quot;)) give.length &lt;- larg[[which(Bgl)]] else if (length(iGiveHead)) give.length &lt;- larg[[iGiveHead]]</command>
+ <property/>
+ <option type="com.ef_prime.rflow.node.base.IfNodeModel">
+  <entry key="condition">any(Bgl &lt;- nl == &quot;give.length&quot;)</entry>
+<subflow>
+ <graph version="0.3" width="688" height="700" locationtype="a" offsetx="0" offsety="0">
+<node id="10" x="440" y="80">
+ <command></command>
+ <property/>
+ <option type="com.ef_prime.rflow.node.base.TunnelNodeModel">
+  <entry key="io">in</entry>
+ </option>
+</node>
+<node id="11" x="440" y="160">
+ <command>give.length &lt;- larg[[which(Bgl)]]</command>
+ <property/>
+ <option type="com.ef_prime.rflow.node.base.FreeNodeModel"/>
+</node>
+<node id="12" x="440" y="240">
+ <command></command>
+ <property/>
+ <option type="com.ef_prime.rflow.node.base.TunnelNodeModel">
+  <entry key="io">out</entry>
+ </option>
+</node>
+<edge from="10" to="11"/>
+<edge from="11" to="12"/>
+ </graph>
+</subflow>
+<subflow>
+ <graph version="0.3" width="688" height="700" locationtype="a" offsetx="0" offsety="0">
+<node id="13" x="440" y="80">
+ <command></command>
+ <property/>
+ <option type="com.ef_prime.rflow.node.base.TunnelNodeModel">
+  <entry key="io">in</entry>
+ </option>
+</node>
+<node id="14" x="440" y="160">
+ <command>if (length(iGiveHead)) give.length &lt;- larg[[iGiveHead]]</command>
+ <property/>
+ <option type="com.ef_prime.rflow.node.base.IfNodeModel">
+  <entry key="condition">length(iGiveHead)</entry>
+<subflow>
+ <graph version="0.3" width="688" height="700" locationtype="a" offsetx="0" offsety="0">
+<node id="15" x="440" y="80">
+ <command></command>
+ <property/>
+ <option type="com.ef_prime.rflow.node.base.TunnelNodeModel">
+  <entry key="io">in</entry>
+ </option>
+</node>
+<node id="16" x="440" y="160">
+ <command>give.length &lt;- larg[[iGiveHead]]</command>
+ <property/>
+ <option type="com.ef_prime.rflow.node.base.FreeNodeModel"/>
+</node>
+<node id="17" x="440" y="240">
+ <command></command>
+ <property/>
+ <option type="com.ef_prime.rflow.node.base.TunnelNodeModel">
+  <entry key="io">out</entry>
+ </option>
+</node>
+<edge from="15" to="16"/>
+<edge from="16" to="17"/>
+ </graph>
+</subflow>
+<subflow>
+ <graph version="0.3" width="688" height="700" locationtype="a" offsetx="0" offsety="0">
+<node id="18" x="440" y="80">
+ <command></command>
+ <property/>
+ <option type="com.ef_prime.rflow.node.base.TunnelNodeModel">
+  <entry key="io">in</entry>
+ </option>
+</node>
+<node id="19" x="440" y="160">
+ <command></command>
+ <property/>
+ <option type="com.ef_prime.rflow.node.base.TunnelNodeModel">
+  <entry key="io">out</entry>
+ </option>
+</node>
+ </graph>
+</subflow>
+ </option>
+</node>
+<node id="20" x="440" y="240">
+ <command></command>
+ <property/>
+ <option type="com.ef_prime.rflow.node.base.TunnelNodeModel">
+  <entry key="io">out</entry>
+ </option>
+</node>
+<edge from="13" to="14"/>
+<edge from="14" to="20"/>
+ </graph>
+</subflow>
+ </option>
+</node>
+<node id="21" x="440" y="400">
+ <command>if (length(iGiveHead)) larg &lt;- larg[-iGiveHead]</command>
+ <property/>
+ <option type="com.ef_prime.rflow.node.base.IfNodeModel">
+  <entry key="condition">length(iGiveHead)</entry>
+<subflow>
+ <graph version="0.3" width="688" height="700" locationtype="a" offsetx="0" offsety="0">
+<node id="22" x="440" y="80">
+ <command></command>
+ <property/>
+ <option type="com.ef_prime.rflow.node.base.TunnelNodeModel">
+  <entry key="io">in</entry>
+ </option>
+</node>
+<node id="23" x="440" y="160">
+ <command>larg &lt;- larg[-iGiveHead]</command>
+ <property/>
+ <option type="com.ef_prime.rflow.node.base.FreeNodeModel"/>
+</node>
+<node id="24" x="440" y="240">
+ <command></command>
+ <property/>
+ <option type="com.ef_prime.rflow.node.base.TunnelNodeModel">
+  <entry key="io">out</entry>
+ </option>
+</node>
+<edge from="22" to="23"/>
+<edge from="23" to="24"/>
+ </graph>
+</subflow>
+<subflow>
+ <graph version="0.3" width="688" height="700" locationtype="a" offsetx="0" offsety="0">
+<node id="25" x="440" y="80">
+ <command></command>
+ <property/>
+ <option type="com.ef_prime.rflow.node.base.TunnelNodeModel">
+  <entry key="io">in</entry>
+ </option>
+</node>
+<node id="26" x="440" y="160">
+ <command></command>
+ <property/>
+ <option type="com.ef_prime.rflow.node.base.TunnelNodeModel">
+  <entry key="io">out</entry>
+ </option>
+</node>
+ </graph>
+</subflow>
+ </option>
+</node>
+<node id="27" x="440" y="480">
+ <command>if (is.numeric(larg[[&quot;nest.lev&quot;]]) &amp;&amp; is.numeric(larg[[&quot;vec.len&quot;]])) larg[[&quot;vec.len&quot;]] &lt;- min(larg[[&quot;vec.len&quot;]], (larg[[&quot;width&quot;]] - nchar(larg[[&quot;indent.str&quot;]]) - 31)%/%19)</command>
+ <property/>
+ <option type="com.ef_prime.rflow.node.base.IfNodeModel">
+  <entry key="condition">is.numeric(larg[[&quot;nest.lev&quot;]]) &amp;&amp; is.numeric(larg[[&quot;vec.len&quot;]])</entry>
+<subflow>
+ <graph version="0.3" width="688" height="700" locationtype="a" offsetx="0" offsety="0">
+<node id="28" x="440" y="80">
+ <command></command>
+ <property/>
+ <option type="com.ef_prime.rflow.node.base.TunnelNodeModel">
+  <entry key="io">in</entry>
+ </option>
+</node>
+<node id="29" x="440" y="160">
+ <command>larg[[&quot;vec.len&quot;]] &lt;- min(larg[[&quot;vec.len&quot;]], (larg[[&quot;width&quot;]] - nchar(larg[[&quot;indent.str&quot;]]) - 31)%/%19)</command>
+ <property/>
+ <option type="com.ef_prime.rflow.node.base.FreeNodeModel"/>
+</node>
+<node id="30" x="440" y="240">
+ <command></command>
+ <property/>
+ <option type="com.ef_prime.rflow.node.base.TunnelNodeModel">
+  <entry key="io">out</entry>
+ </option>
+</node>
+<edge from="28" to="29"/>
+<edge from="29" to="30"/>
+ </graph>
+</subflow>
+<subflow>
+ <graph version="0.3" width="688" height="700" locationtype="a" offsetx="0" offsety="0">
+<node id="31" x="440" y="80">
+ <command></command>
+ <property/>
+ <option type="com.ef_prime.rflow.node.base.TunnelNodeModel">
+  <entry key="io">in</entry>
+ </option>
+</node>
+<node id="32" x="440" y="160">
+ <command></command>
+ <property/>
+ <option type="com.ef_prime.rflow.node.base.TunnelNodeModel">
+  <entry key="io">out</entry>
+ </option>
+</node>
+ </graph>
+</subflow>
+ </option>
+</node>
+<node id="33" x="440" y="560">
+ <command></command>
+ <property/>
+ <option type="com.ef_prime.rflow.node.base.TunnelNodeModel">
+  <entry key="io">out</entry>
+ </option>
+</node>
+<edge from="6" to="7"/>
+<edge from="7" to="8"/>
+<edge from="8" to="9"/>
+<edge from="9" to="21"/>
+<edge from="21" to="27"/>
+<edge from="27" to="33"/>
+ </graph>
+</subflow>
+<subflow>
+ <graph version="0.3" width="688" height="700" locationtype="a" offsetx="0" offsety="0">
+<node id="34" x="440" y="80">
+ <command></command>
+ <property/>
+ <option type="com.ef_prime.rflow.node.base.TunnelNodeModel">
+  <entry key="io">in</entry>
+ </option>
+</node>
+<node id="35" x="440" y="160">
+ <command></command>
+ <property/>
+ <option type="com.ef_prime.rflow.node.base.TunnelNodeModel">
+  <entry key="io">out</entry>
+ </option>
+</node>
+ </graph>
+</subflow>
+ </option>
+</node>
+<node id="36" x="440" y="240">
+ <command>`%w/o%` &lt;- function(x, y) x[is.na(match(x, y))]</command>
+ <property/>
+ <option type="com.ef_prime.rflow.node.base.FunctionNodeModel">
+  <entry key="function">`%w/o%`</entry>
+  <entry key="args">(x , y )</entry>
+  <subflow>
+   <graph version="0.3" width="688" height="700" locationtype="a" offsetx="0" offsety="0">
+<node id="37" x="440" y="80">
+ <command></command>
+ <property/>
+ <option type="com.ef_prime.rflow.node.base.TunnelNodeModel">
+  <entry key="io">in</entry>
+ </option>
+</node>
+<node id="38" x="440" y="160">
+ <command>x[is.na(match(x, y))]</command>
+ <property/>
+ <option type="com.ef_prime.rflow.node.base.FreeNodeModel"/>
+</node>
+<node id="39" x="440" y="240">
+ <command></command>
+ <property/>
+ <option type="com.ef_prime.rflow.node.base.TunnelNodeModel">
+  <entry key="io">out</entry>
+ </option>
+</node>
+<edge from="37" to="38"/>
+<edge from="38" to="39"/>
+   </graph>
+  </subflow>
+ </option>
+</node>
+<node id="40" x="440" y="320">
+ <command>for (i in seq_len(min(list.len, le))) {
+    cat(indent.str, comp.str, nam.ob[i], &quot;:&quot;, sep = &quot;&quot;)
+    envir &lt;- if (typeof(object[[i]]) == &quot;promise&quot;) {
+        structure(object, nam = as.name(nam.ob[i]))
+    }
+    strSub(object[[i]], give.length = give.length, nest.lev = nest.lev + 1, indent.str = paste(indent.str, &quot;..&quot;))
+}</command>
+ <property/>
+ <option type="com.ef_prime.rflow.node.base.LoopNodeModel">
+  <entry key="loop">for</entry>
+  <entry key="condition">i in seq_len(min(list.len, le))</entry>
+  <subflow>
+   <graph version="0.3" width="688" height="700" locationtype="a" offsetx="0" offsety="0">
+<node id="41" x="440" y="80">
+ <command></command>
+ <property/>
+ <option type="com.ef_prime.rflow.node.base.TunnelNodeModel">
+  <entry key="io">in</entry>
+ </option>
+</node>
+<node id="42" x="440" y="160">
+ <command>cat(indent.str, comp.str, nam.ob[i], &quot;:&quot;, sep = &quot;&quot;)</command>
+ <property/>
+ <option type="com.ef_prime.rflow.node.base.FreeNodeModel"/>
+</node>
+<node id="43" x="440" y="240">
+ <command>envir &lt;- if (typeof(object[[i]]) == &quot;promise&quot;) {
+    structure(object, nam = as.name(nam.ob[i]))
+}</command>
+ <property/>
+ <option type="com.ef_prime.rflow.node.base.FreeNodeModel"/>
+</node>
+<node id="44" x="440" y="320">
+ <command>strSub(object[[i]], give.length = give.length, nest.lev = nest.lev + 1, indent.str = paste(indent.str, &quot;..&quot;))</command>
+ <property/>
+ <option type="com.ef_prime.rflow.node.base.FreeNodeModel"/>
+</node>
+<node id="45" x="440" y="400">
+ <command></command>
+ <property/>
+ <option type="com.ef_prime.rflow.node.base.TunnelNodeModel">
+  <entry key="io">out</entry>
+ </option>
+</node>
+<edge from="41" to="42"/>
+<edge from="42" to="43"/>
+<edge from="43" to="44"/>
+<edge from="44" to="45"/>
+   </graph>
+  </subflow>
+ </option>
+</node>
+<node id="46" x="440" y="400">
+ <command>while (a &lt; 10) {
+    cat(&quot;Hello\n&quot;)
+}</command>
+ <property/>
+ <option type="com.ef_prime.rflow.node.base.LoopNodeModel">
+  <entry key="loop">while</entry>
+  <entry key="condition">a &lt; 10</entry>
+  <subflow>
+   <graph version="0.3" width="688" height="700" locationtype="a" offsetx="0" offsety="0">
+<node id="47" x="440" y="80">
+ <command></command>
+ <property/>
+ <option type="com.ef_prime.rflow.node.base.TunnelNodeModel">
+  <entry key="io">in</entry>
+ </option>
+</node>
+<node id="48" x="440" y="160">
+ <command>cat(&quot;Hello\n&quot;)</command>
+ <property/>
+ <option type="com.ef_prime.rflow.node.base.FreeNodeModel"/>
+</node>
+<node id="49" x="440" y="240">
+ <command></command>
+ <property/>
+ <option type="com.ef_prime.rflow.node.base.TunnelNodeModel">
+  <entry key="io">out</entry>
+ </option>
+</node>
+<edge from="47" to="48"/>
+<edge from="48" to="49"/>
+   </graph>
+  </subflow>
+ </option>
+</node>
+<node id="50" x="440" y="480">
+ <command>repeat {
+    error = -0.2 * log((1/runif(60, 0, 1)) - 1)
+    z = (p &lt; 0.5 + error)
+    z = replace(z, z == TRUE, 1)
+    if (sum(z[(3 * i - 2):(3 * i)]) &gt; 0) {
+        break
+    }
+}</command>
+ <property/>
+ <option type="com.ef_prime.rflow.node.base.LoopNodeModel">
+  <entry key="loop">repeat</entry>
+  <subflow>
+   <graph version="0.3" width="688" height="700" locationtype="a" offsetx="0" offsety="0">
+<node id="51" x="440" y="80">
+ <command></command>
+ <property/>
+ <option type="com.ef_prime.rflow.node.base.TunnelNodeModel">
+  <entry key="io">in</entry>
+ </option>
+</node>
+<node id="52" x="440" y="160">
+ <command>error = -0.2 * log((1/runif(60, 0, 1)) - 1)</command>
+ <property/>
+ <option type="com.ef_prime.rflow.node.base.FreeNodeModel"/>
+</node>
+<node id="53" x="440" y="240">
+ <command>z = (p &lt; 0.5 + error)</command>
+ <property/>
+ <option type="com.ef_prime.rflow.node.base.FreeNodeModel"/>
+</node>
+<node id="54" x="440" y="320">
+ <command>z = replace(z, z == TRUE, 1)</command>
+ <property/>
+ <option type="com.ef_prime.rflow.node.base.FreeNodeModel"/>
+</node>
+<node id="55" x="440" y="400">
+ <command>if (sum(z[(3 * i - 2):(3 * i)]) &gt; 0) {
+    break
+}</command>
+ <property/>
+ <option type="com.ef_prime.rflow.node.base.IfNodeModel">
+  <entry key="condition">sum(z[(3 * i - 2):(3 * i)]) &gt; 0</entry>
+<subflow>
+ <graph version="0.3" width="688" height="700" locationtype="a" offsetx="0" offsety="0">
+<node id="56" x="440" y="80">
+ <command></command>
+ <property/>
+ <option type="com.ef_prime.rflow.node.base.TunnelNodeModel">
+  <entry key="io">in</entry>
+ </option>
+</node>
+<node id="57" x="440" y="160">
+ <command>break</command>
+ <property/>
+ <option type="com.ef_prime.rflow.node.base.FreeNodeModel"/>
+</node>
+<node id="58" x="440" y="240">
+ <command></command>
+ <property/>
+ <option type="com.ef_prime.rflow.node.base.TunnelNodeModel">
+  <entry key="io">out</entry>
+ </option>
+</node>
+<edge from="56" to="57"/>
+<edge from="57" to="58"/>
+ </graph>
+</subflow>
+<subflow>
+ <graph version="0.3" width="688" height="700" locationtype="a" offsetx="0" offsety="0">
+<node id="59" x="440" y="80">
+ <command></command>
+ <property/>
+ <option type="com.ef_prime.rflow.node.base.TunnelNodeModel">
+  <entry key="io">in</entry>
+ </option>
+</node>
+<node id="60" x="440" y="160">
+ <command></command>
+ <property/>
+ <option type="com.ef_prime.rflow.node.base.TunnelNodeModel">
+  <entry key="io">out</entry>
+ </option>
+</node>
+ </graph>
+</subflow>
+ </option>
+</node>
+<node id="61" x="440" y="480">
+ <command></command>
+ <property/>
+ <option type="com.ef_prime.rflow.node.base.TunnelNodeModel">
+  <entry key="io">out</entry>
+ </option>
+</node>
+<edge from="51" to="52"/>
+<edge from="52" to="53"/>
+<edge from="53" to="54"/>
+<edge from="54" to="55"/>
+<edge from="55" to="61"/>
+   </graph>
+  </subflow>
+ </option>
+</node>
+<node id="62" x="440" y="560">
+ <command>error = -0.2 * log((1/runif(60, 0, 1)) - 1)</command>
+ <property/>
+ <option type="com.ef_prime.rflow.node.base.FreeNodeModel"/>
+</node>
+<node id="63" x="440" y="640">
+ <command>z = (p &lt; 0.5 + error)</command>
+ <property/>
+ <option type="com.ef_prime.rflow.node.base.FreeNodeModel"/>
+</node>
+<edge from="1" to="5"/>
+<edge from="5" to="36"/>
+<edge from="36" to="40"/>
+<edge from="40" to="46"/>
+<edge from="46" to="50"/>
+<edge from="50" to="62"/>
+<edge from="62" to="63"/>
+ </graph>
+ <task>
+  <taskgroup>
+   <taskproperty>
+    <entry key="title">Task</entry>
+   </taskproperty>
+  </taskgroup>
+ </task>
+</rflow>
