@@ -14,13 +14,13 @@ NULL
 R2rflow <- function (text = NULL, file = NULL, output = NULL) {
   
   if (missing(text) && (missing(file) || nchar(file) == 0)) {
-    stop("No R code to convert")
+    stop("No R code to convert", domain = "R-R2rflow")
   }
   else if(!missing(text) && !missing(file)) {
-    stop("Cannot specify both 'text' and 'file' arguments")
+    stop("Cannot specify both 'text' and 'file' arguments", domain = "R-R2rflow")
   }
   else if(!missing(text) && missing(output)) {
-    stop("'output' argument must be specified")
+    stop("'output' argument must be specified", domain = "R-R2rflow")
   }
   else if(!missing(file) && missing(output)) {
     output <- sub("(\\.[RrSq])?$", "\\.rflow", file)
