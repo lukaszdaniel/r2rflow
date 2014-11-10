@@ -118,8 +118,8 @@ FunctionNodeModel <- function (e, w) {
   w$set("ypos", length(edge))
   TunnelNodeModel(type = "in", w = w)
   
-  if ((length(e[[3]][[3]]) > 1) && e[[3]][[3]][[1]] == "{") {
-    for (ee in as.list(e[[3]][[3]])) if (!missing(ee) && deparseTreeExp(ee) != "`{`")  {
+  if ((length(e[[3]][[3]]) > 1) && CurlyBracket(e[[3]][[3]][[1]])) {
+    for (ee in as.list(e[[3]][[3]])) if (!missing(ee) && !CurlyBracket(deparseTreeExp(ee)))  {
       edge <- c(edge, w$get("nodeID") + 1)
       w$set("ypos", length(edge))
       walkCode(ee, w)
@@ -167,8 +167,8 @@ IfNodeModel <- function (e, w) {
   w$set("ypos", length(edge))
   TunnelNodeModel(type = "in", w = w)
   
-  if ((length(e[[3]]) > 1L) && e[[3]][[1]] == "{") {
-    for (ee in as.list(e[[3]])) if (!missing(ee) && deparseTreeExp(ee) != "`{`") {
+  if ((length(e[[3]]) > 1L) && CurlyBracket(e[[3]][[1]])) {
+    for (ee in as.list(e[[3]])) if (!missing(ee) && !CurlyBracket(deparseTreeExp(ee))) {
       edge <- c(edge, w$get("nodeID") + 1)
       w$set("ypos", length(edge))
       walkCode(ee, w)
@@ -200,8 +200,8 @@ IfNodeModel <- function (e, w) {
   TunnelNodeModel(type = "in", w = w)
   
   if (length(e) == 4) {
-    if ((length(e[[4]]) > 1L) && e[[4]][[1]] == "{") {
-      for (ee in as.list(e[[4]])) if (!missing(ee) && deparseTreeExp(ee) != "`{`")  {
+    if ((length(e[[4]]) > 1L) && CurlyBracket(e[[4]][[1]])) {
+      for (ee in as.list(e[[4]])) if (!missing(ee) && !CurlyBracket(deparseTreeExp(ee)))  {
         edge <- c(edge, w$get("nodeID") + 1)
         w$set("ypos", length(edge))
         walkCode(ee, w)
@@ -251,8 +251,8 @@ ForNodeModel <- function (e, w) {
   w$set("ypos", length(edge))
   TunnelNodeModel(type = "in", w = w)
   
-  if ((length(e[[4]]) > 1L) && e[[4]][[1]] == "{") {
-    for (ee in as.list(e[[4]])) if (!missing(ee) && deparseTreeExp(ee) != "`{`") {
+  if ((length(e[[4]]) > 1L) && CurlyBracket(e[[4]][[1]])) {
+    for (ee in as.list(e[[4]])) if (!missing(ee) && !CurlyBracket(deparseTreeExp(ee))) {
       edge <- c(edge, w$get("nodeID") + 1)
       w$set("ypos", length(edge))
       walkCode(ee, w)
@@ -299,8 +299,8 @@ WhileNodeModel <- function (e, w) {
   w$set("ypos", length(edge))
   TunnelNodeModel(type = "in", w = w)
   
-  if ((length(e[[3]]) > 1L) && e[[3]][[1]] == "{") {
-    for (ee in as.list(e[[3]])) if (!missing(ee) && deparseTreeExp(ee) != "`{`") {
+  if ((length(e[[3]]) > 1L) && CurlyBracket(e[[3]][[1]])) {
+    for (ee in as.list(e[[3]])) if (!missing(ee) && !CurlyBracket(deparseTreeExp(ee))) {
       edge <- c(edge, w$get("nodeID") + 1)
       w$set("ypos", length(edge))
       walkCode(ee, w)
@@ -345,8 +345,8 @@ RepeatNodeModel <- function (e, w) {
   w$set("ypos", length(edge))
   TunnelNodeModel(type = "in", w = w)
   
-  if ((length(e[[2]]) > 1L) && e[[2]][[1]] == "{") {
-    for (ee in as.list(e[[2]])) if (!missing(ee) && deparseTreeExp(ee) != "`{`") {
+  if ((length(e[[2]]) > 1L) && CurlyBracket(e[[2]][[1]])) {
+    for (ee in as.list(e[[2]])) if (!missing(ee) && !CurlyBracket(deparseTreeExp(ee))) {
       edge <- c(edge, w$get("nodeID") + 1)
       w$set("ypos", length(edge))
       walkCode(ee, w)
@@ -452,4 +452,8 @@ ReplaceChr <- function(text) {
   text <- gsub(">", "&gt;", text)
   text <- gsub("\"", "&quot;", text)
   return(text)
+}
+
+CurlyBracket <- function(x) {
+  grepl(pattern = "`?\\{`?", x = x)
 }
