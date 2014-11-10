@@ -455,5 +455,5 @@ ReplaceChr <- function(text) {
 }
 
 CurlyBracket <- function(x) {
-  grepl(pattern = "`?\\{`?", x = x)
+  grepl(pattern = "^`?\\{`?$", x = x)
 }
