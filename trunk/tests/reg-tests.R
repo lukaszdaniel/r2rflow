@@ -45,3 +45,10 @@ repeat {
 p <- 1
 error= -0.2*log((1/runif(60, 0, 1))-1) # a random component
 z=(p<0.5+error) # TRUE/FALSE condition
+
+#8: code block
+{
+  x <- 1:100
+  mean(x)
+  sd(x)
+}
