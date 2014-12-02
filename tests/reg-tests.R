@@ -48,6 +48,9 @@ z=(p<0.5+error) # TRUE/FALSE condition
 
 #8: code block
 {
+  {
+   y <- sqrt(3)
+  }
   x <- 1:100
   mean(x)
   sd(x)

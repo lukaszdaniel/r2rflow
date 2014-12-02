@@ -83,7 +83,7 @@ functionCall <- function (e, w) {
     WhileNodeModel(e,w)
   } else if (e[[1]] == "repeat") {
     RepeatNodeModel(e,w)
-  } else if (e[[1]] == "{") {
+  } else if (CurlyBracket(e[[1]])) {
     SubflowNodeModel(e,w)
   } else {
     FreeNodeModel(e,w)
