@@ -491,6 +491,9 @@
 </node>
 <node id="57" x="440" y="960">
  <command>{
+    {
+        y &lt;- sqrt(3)
+    }
     x &lt;- 1:100
     mean(x)
     sd(x)
@@ -507,21 +510,54 @@
  </option>
 </node>
 <node id="59" x="440" y="160">
+ <command>{
+    y &lt;- sqrt(3)
+}</command>
+ <property/>
+ <option type="com.ef_prime.rflow.node.base.SubflowNodeModel">
+  <subflow>
+   <graph version="0.3" width="688" height="700" locationtype="a" offsetx="100" offsety="50">
+<node id="60" x="440" y="80">
+ <command></command>
+ <property/>
+ <option type="com.ef_prime.rflow.node.base.TunnelNodeModel">
+  <entry key="io">in</entry>
+ </option>
+</node>
+<node id="61" x="440" y="160">
+ <command>y &lt;- sqrt(3)</command>
+ <property/>
+ <option type="com.ef_prime.rflow.node.base.FreeNodeModel"/>
+</node>
+<node id="62" x="440" y="240">
+ <command></command>
+ <property/>
+ <option type="com.ef_prime.rflow.node.base.TunnelNodeModel">
+  <entry key="io">out</entry>
+ </option>
+</node>
+<edge from="60" to="61"/>
+<edge from="61" to="62"/>
+   </graph>
+  </subflow>
+ </option>
+</node>
+<node id="63" x="440" y="240">
  <command>x &lt;- 1:100</command>
  <property/>
  <option type="com.ef_prime.rflow.node.base.FreeNodeModel"/>
 </node>
-<node id="60" x="440" y="240">
+<node id="64" x="440" y="320">
  <command>mean(x)</command>
  <property/>
  <option type="com.ef_prime.rflow.node.base.FreeNodeModel"/>
 </node>
-<node id="61" x="440" y="320">
+<node id="65" x="440" y="400">
  <command>sd(x)</command>
  <property/>
  <option type="com.ef_prime.rflow.node.base.FreeNodeModel"/>
 </node>
-<node id="62" x="440" y="400">
+<node id="66" x="440" y="480">
  <command></command>
  <property/>
  <option type="com.ef_prime.rflow.node.base.TunnelNodeModel">
@@ -529,9 +565,10 @@
  </option>
 </node>
 <edge from="58" to="59"/>
-<edge from="59" to="60"/>
-<edge from="60" to="61"/>
-<edge from="61" to="62"/>
+<edge from="59" to="63"/>
+<edge from="63" to="64"/>
+<edge from="64" to="65"/>
+<edge from="65" to="66"/>
    </graph>
   </subflow>
  </option>
