@@ -55,3 +55,15 @@ z=(p<0.5+error) # TRUE/FALSE condition
   mean(x)
   sd(x)
 }
+
+#9: '::' statement
+get_formals_from_method_definition <- function(m) {
+                methods::unRematchDefinition(m)
+}
+
+#10: function return
+testfun <- function(x = 1L) {
+ x <- x + 1L
+ if(x > 3L) return("x is greater than 3")
+ "x is not greater than 3"
+}

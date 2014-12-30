@@ -573,6 +573,136 @@
   </subflow>
  </option>
 </node>
+<node id="67" x="440" y="1040">
+ <command>get_formals_from_method_definition &lt;- function(m) {
+    methods::unRematchDefinition(m)
+}</command>
+ <property/>
+ <option type="com.ef_prime.rflow.node.base.FunctionNodeModel">
+  <entry key="function">get_formals_from_method_definition</entry>
+  <entry key="args">(m )</entry>
+  <subflow>
+   <graph version="0.3" width="688" height="700" locationtype="a" offsetx="0" offsety="0">
+<node id="68" x="440" y="80">
+ <command></command>
+ <property/>
+ <option type="com.ef_prime.rflow.node.base.TunnelNodeModel">
+  <entry key="io">in</entry>
+ </option>
+</node>
+<node id="69" x="440" y="160">
+ <command>methods::unRematchDefinition(m)</command>
+ <property/>
+ <option type="com.ef_prime.rflow.node.base.FreeNodeModel"/>
+</node>
+<node id="70" x="440" y="240">
+ <command></command>
+ <property/>
+ <option type="com.ef_prime.rflow.node.base.TunnelNodeModel">
+  <entry key="io">out</entry>
+ </option>
+</node>
+<edge from="68" to="69"/>
+<edge from="69" to="70"/>
+   </graph>
+  </subflow>
+ </option>
+</node>
+<node id="71" x="440" y="1120">
+ <command>testfun &lt;- function(x = 1L) {
+    x &lt;- x + 1L
+    if (x &gt; 3L) 
+        return(&quot;x is greater than 3&quot;)
+    &quot;x is not greater than 3&quot;
+}</command>
+ <property/>
+ <option type="com.ef_prime.rflow.node.base.FunctionNodeModel">
+  <entry key="function">testfun</entry>
+  <entry key="args">(x = 1L)</entry>
+  <subflow>
+   <graph version="0.3" width="688" height="700" locationtype="a" offsetx="0" offsety="0">
+<node id="72" x="440" y="80">
+ <command></command>
+ <property/>
+ <option type="com.ef_prime.rflow.node.base.TunnelNodeModel">
+  <entry key="io">in</entry>
+ </option>
+</node>
+<node id="73" x="440" y="160">
+ <command>x &lt;- x + 1L</command>
+ <property/>
+ <option type="com.ef_prime.rflow.node.base.FreeNodeModel"/>
+</node>
+<node id="74" x="440" y="240">
+ <command>if (x &gt; 3L) return(&quot;x is greater than 3&quot;)</command>
+ <property/>
+ <option type="com.ef_prime.rflow.node.base.IfNodeModel">
+  <entry key="condition">x &gt; 3L</entry>
+<subflow>
+ <graph version="0.3" width="688" height="700" locationtype="a" offsetx="0" offsety="0">
+<node id="75" x="440" y="80">
+ <command></command>
+ <property/>
+ <option type="com.ef_prime.rflow.node.base.TunnelNodeModel">
+  <entry key="io">in</entry>
+ </option>
+</node>
+<node id="76" x="440" y="160">
+ <command>return(&quot;x is greater than 3&quot;)</command>
+ <property/>
+ <option type="com.ef_prime.rflow.node.base.FreeNodeModel"/>
+</node>
+<node id="77" x="440" y="240">
+ <command></command>
+ <property/>
+ <option type="com.ef_prime.rflow.node.base.TunnelNodeModel">
+  <entry key="io">out</entry>
+ </option>
+</node>
+<edge from="75" to="76"/>
+<edge from="76" to="77"/>
+ </graph>
+</subflow>
+<subflow>
+ <graph version="0.3" width="688" height="700" locationtype="a" offsetx="0" offsety="0">
+<node id="78" x="440" y="80">
+ <command></command>
+ <property/>
+ <option type="com.ef_prime.rflow.node.base.TunnelNodeModel">
+  <entry key="io">in</entry>
+ </option>
+</node>
+<node id="79" x="440" y="160">
+ <command></command>
+ <property/>
+ <option type="com.ef_prime.rflow.node.base.TunnelNodeModel">
+  <entry key="io">out</entry>
+ </option>
+</node>
+ </graph>
+</subflow>
+ </option>
+</node>
+<node id="80" x="440" y="320">
+ <command>&quot;x is not greater than 3&quot;</command>
+ <property/>
+ <option type="com.ef_prime.rflow.node.base.FreeNodeModel"/>
+</node>
+<node id="81" x="440" y="400">
+ <command></command>
+ <property/>
+ <option type="com.ef_prime.rflow.node.base.TunnelNodeModel">
+  <entry key="io">out</entry>
+ </option>
+</node>
+<edge from="72" to="73"/>
+<edge from="73" to="74"/>
+<edge from="74" to="80"/>
+<edge from="80" to="81"/>
+   </graph>
+  </subflow>
+ </option>
+</node>
 <edge from="1" to="5"/>
 <edge from="5" to="6"/>
 <edge from="6" to="24"/>
@@ -584,6 +714,8 @@
 <edge from="54" to="55"/>
 <edge from="55" to="56"/>
 <edge from="56" to="57"/>
+<edge from="57" to="67"/>
+<edge from="67" to="71"/>
  </graph>
  <task>
   <taskgroup>
