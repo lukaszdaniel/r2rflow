@@ -7,13 +7,14 @@ NULL
 #' @author Lukasz Daniel
 #' @param file A file containing R code.
 #' @param text A text containing R code.
+#' @param expand Should diagram be expanded up to a single command?
 #' @param output An output rflow file. If a 'file' argument is specified, 'output' argument is
 #'               assumed to have the same file name as in 'file' but with rflow extension.
 #' @return xml formated R code
 #' @export
-R2rflow <- function (text = NULL, file = NULL, output = NULL) {
+R2rflow <- function (text = NULL, file = NULL, output = NULL, expand = TRUE) {
   
-  if (missing(text) && (missing(file) || nchar(file) == 0)) {
+  if (missing(text) && (missing(file) || nchar(file) == 0L)) {
     stop("No R code to convert", domain = "R-R2rflow")
   }
   else if(!missing(text) && !missing(file)) {
@@ -45,12 +46,15 @@ R2rflow <- function (text = NULL, file = NULL, output = NULL) {
   cat(' <graph version="0.3" width="894" height="742" locationtype="a" offsetx="0" offsety="0">\n', append = TRUE, file = output)
   Settings(output)
   
-  for(i in seq_len(length(codes))) {
-    
-    edge <- c(edge, get("nodeID", envir = env)+1)
-    w$set("ypos", length(edge))
-    walkCode(codes[[i]], w)
-  }
+  if(expand) {
+    for(i in seq_len(length(codes))) {
+      
+      edge <- c(edge, get("nodeID", envir = env) + 1)
+      w$set("ypos", length(edge))
+      walkCode(codes[[i]], w)
+    }
+  } else 
+    FreeNodeModel(codes,w)
   
   PrintEdges(edge, file = output)
   cat(' </graph>\n', append = TRUE, file = output)
@@ -59,21 +63,18 @@ R2rflow <- function (text = NULL, file = NULL, output = NULL) {
 }
 
 deparseTreeExp <- function (e) {
-  s <- NULL
-  d <- deparse(e, width.cutoff = 400, backtick = TRUE)
-  for (x in d) {
-    s <- paste(s, x, "\n", sep = "")
-  }
-  s <- substring(s, 1, nchar(s, type = "chars") - 1)
-  s <- ReplaceChr(s)
-  return(s)
+  
+  if(!is.expression(e))
+    e <- deparse(e, width.cutoff = 400, backtick = TRUE)
+  
+  return(ReplaceChr(paste(e, sep = "", collapse = "\n")))
 }
 
 functionCall <- function (e, w) {
 
   w$set("nodeID", w$get("nodeID") + 1)
 
-  if (e[[1]] == "<-" && (length(e[[3]]) == 4) && e[[3]][[1]] == "function") {
+  if ((e[[1]] == "<-") && (length(e[[3]]) == 4L) && (e[[3]][[1]] == "function")) {
     FunctionNodeModel(e,w)
   } else if (e[[1]] == "if") {
     IfNodeModel(e,w)
@@ -109,7 +110,7 @@ FunctionNodeModel <- function (e, w) {
   cat(" <property/>\n", append = TRUE, file = output)
   cat(' <option type="com.ef_prime.rflow.node.base.FunctionNodeModel">\n', append = TRUE, file = output)
   cat(sprintf('  <entry key="function">%s</entry>\n', deparseTreeExp(e[[2]])), append = TRUE, file = output)
-  cat(sprintf('  <entry key="args">(%s)</entry>\n', gsub("= (,|$)", "\\1", gsub("^list\\(|\\)$|^NULL$", "", deparseTreeExp(e[[3]][[2]])))), append = TRUE, file = output)
+  cat(sprintf('  <entry key="args">(%s)</entry>\n', gsub("= (,|$)", "\\1", gsub("^(pair)?list\\(|\\)$|^NULL$", "", deparseTreeExp(e[[3]][[2]])))), append = TRUE, file = output)
   cat("  <subflow>\n", append = TRUE, file = output)
   cat(sprintf('   <graph version="0.3" width="%d" height="%d" locationtype="a" offsetx="0" offsety="0">\n', x, y), append = TRUE, file = output)
   
@@ -120,7 +121,7 @@ FunctionNodeModel <- function (e, w) {
   w$set("ypos", length(edge))
   TunnelNodeModel(type = "in", w = w)
   
-  if ((length(e[[3]][[3]]) > 1) && CurlyBracket(e[[3]][[3]][[1]])) {
+  if ((length(e[[3]][[3]]) > 1L) && CurlyBracket(e[[3]][[3]][[1]])) {
     for (ee in as.list(e[[3]][[3]])) if (!missing(ee) && !CurlyBracket(deparseTreeExp(ee)))  {
       edge <- c(edge, w$get("nodeID") + 1)
       w$set("ypos", length(edge))
@@ -201,7 +202,7 @@ IfNodeModel <- function (e, w) {
   w$set("ypos", length(edge))
   TunnelNodeModel(type = "in", w = w)
   
-  if (length(e) == 4) {
+  if (length(e) == 4L) {
     if ((length(e[[4]]) > 1L) && CurlyBracket(e[[4]][[1]])) {
       for (ee in as.list(e[[4]])) if (!missing(ee) && !CurlyBracket(deparseTreeExp(ee)))  {
         edge <- c(edge, w$get("nodeID") + 1)
@@ -425,7 +426,7 @@ FreeNodeModel <- function (e, w) {
 }
 
 PrintEdges <- function(x, file) {
-  if(length(x) > 1L)  for(i in seq_len(length(x)-1L)) {
+  if(length(x) > 1L) for(i in seq_len(length(x)-1L)) {
     cat(sprintf('<edge from="%d" to="%d"/>\n', x[i], x[i + 1L]), append = TRUE, file = file)
   }
 }
@@ -496,5 +497,6 @@ ReplaceChr <- function(text) {
 }
 
 CurlyBracket <- function(x) {
+  if(length(x) > 1L) return(FALSE)
   grepl(pattern = "^`?\\{`?$", x = x)
 }
