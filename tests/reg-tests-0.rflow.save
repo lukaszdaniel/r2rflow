@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE rflow [
+<!ENTITY lt "&#38;#60;">
+<!ENTITY gt "&#62;">
+<!ENTITY amp "&#38;#38;">
+<!ENTITY apos "&#39;">
+<!ENTITY quot "&#34;">
+]>
+<rflow>
+ <graph version="0.3" width="894" height="742" locationtype="a" offsetx="0" offsety="0">
+  <setting>
+   <entry key="OUTPUT_DIRECTORY"></entry>
+   <entry key="SAVE_CACHE">false</entry>
+   <entry key="FONT_SCREEN">monospace</entry>
+   <entry key="TEXT_ENCODING">UTF-8</entry>
+   <entry key="LOAD_CACHE">false</entry>
+   <entry key="IGNORE_ERROR">false</entry>
+   <entry key="SAVE_WORKSPACE"></entry>
+   <entry key="OUTPUT_REPORT">true</entry>
+   <entry key="RUN_TYPE">2</entry>
+   <entry key="OUTPUT_ITEMS">script</entry>
+   <entry key="USE_GRID">true</entry>
+   <entry key="REPORT_TYPES">pdf,html</entry>
+   <entry key="FOLDER">empty</entry>
+   <entry key="GRID_DISTANCE2">10</entry>
+   <entry key="IMAGE_SIZE">480,480</entry>
+   <entry key="FONT_OTHER">sans-serif</entry>
+  </setting>
+<node id="0" x="440" y="80">
+ <command>str &lt;- function(object, ...) UseMethod(&quot;str&quot;)
+a &lt;- 1:10
+if (length(a)) {
+    b &lt;- sum(a)
+    if (b &gt; 100 &amp;&amp; b &lt; 10000) 
+        c &lt;- sqrt(b)
+    else if (b &lt; 500) 
+        c &lt;- log(b)
+}
+`%w/o%` &lt;- function(x, y) x[is.na(match(x, y))]
+for (i in seq_len(10)) {
+    cat(i, &quot;\n&quot;, sep = &quot;&quot;)
+    e &lt;- if (i == 3) {
+        cat(sqrt(i), &quot;\n&quot;, sep = &quot;&quot;)
+    }
+    cat(i^2, &quot;\n&quot;, sep = &quot;&quot;)
+}
+a &lt;- 1
+while (a &lt; 10) {
+    cat(&quot;Hello\n&quot;)
+    a &lt;- a + 1
+}
+repeat {
+    p &lt;- 1
+    i &lt;- 1
+    error = -0.2 * log((1/runif(60, 0, 1)) - 1)
+    z = (p &lt; 0.5 + error)
+    z = replace(z, z == TRUE, 1)
+    if (sum(z[(3 * i - 2):(3 * i)]) != 0) {
+        break
+    }
+}
+p &lt;- 1
+error = -0.2 * log((1/runif(60, 0, 1)) - 1)
+z = (p &lt; 0.5 + error)
+{
+    {
+        y &lt;- sqrt(3)
+    }
+    x &lt;- 1:100
+    mean(x)
+    sd(x)
+}
+get_formals_from_method_definition &lt;- function(m) {
+    methods::unRematchDefinition(m)
+}
+testfun &lt;- function(x = 1) {
+    x &lt;- x + 1
+    if (x &gt; 3) 
+        return(&quot;x is greater than 3&quot;)
+    &quot;x is not greater than 3&quot;
+}</command>
+ <property/>
+ <option type="com.ef_prime.rflow.node.base.FreeNodeModel"/>
+</node>
+ </graph>
+ <task>
+  <taskgroup>
+   <taskproperty>
+    <entry key="title">Task</entry>
+   </taskproperty>
+  </taskgroup>
+ </task>
+</rflow>
