@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE rflow [
+<!ENTITY lt "&#38;#60;">
+<!ENTITY gt "&#62;">
+<!ENTITY amp "&#38;#38;">
+<!ENTITY apos "&#39;">
+<!ENTITY quot "&#34;">
+]>
+<rflow>
+ <graph version="0.3" width="894" height="742" locationtype="a" offsetx="0" offsety="0">
+  <setting>
+   <entry key="OUTPUT_DIRECTORY"></entry>
+   <entry key="SAVE_CACHE">false</entry>
+   <entry key="FONT_SCREEN">monospace</entry>
+   <entry key="TEXT_ENCODING">UTF-8</entry>
+   <entry key="LOAD_CACHE">false</entry>
+   <entry key="IGNORE_ERROR">false</entry>
+   <entry key="SAVE_WORKSPACE"></entry>
+   <entry key="OUTPUT_REPORT">true</entry>
+   <entry key="RUN_TYPE">2</entry>
+   <entry key="OUTPUT_ITEMS">script</entry>
+   <entry key="USE_GRID">true</entry>
+   <entry key="REPORT_TYPES">pdf,html</entry>
+   <entry key="FOLDER">empty</entry>
+   <entry key="GRID_DISTANCE2">10</entry>
+   <entry key="IMAGE_SIZE">480,480</entry>
+   <entry key="FONT_OTHER">sans-serif</entry>
+  </setting>
+<node id="1" x="440" y="80">
+ <command>str &lt;- function(object, ...) UseMethod(&quot;str&quot;)</command>
+ <property/>
+ <option type="com.ef_prime.rflow.node.base.FreeNodeModel"/>
+</node>
+<node id="2" x="440" y="160">
+ <command>a &lt;- 1:10</command>
+ <property/>
+ <option type="com.ef_prime.rflow.node.base.FreeNodeModel"/>
+</node>
+<node id="3" x="440" y="240">
+ <command>if (length(a)) {
+    b &lt;- sum(a)
+    if (b &gt; 100 &amp;&amp; b &lt; 10000) 
+        c &lt;- sqrt(b)
+    else if (b &lt; 500) 
+        c &lt;- log(b)
+}</command>
+ <property/>
+ <option type="com.ef_prime.rflow.node.base.FreeNodeModel"/>
+</node>
+<node id="4" x="440" y="320">
+ <command>`%w/o%` &lt;- function(x, y) x[is.na(match(x, y))]</command>
+ <property/>
+ <option type="com.ef_prime.rflow.node.base.FreeNodeModel"/>
+</node>
+<node id="5" x="440" y="400">
+ <command>for (i in seq_len(10)) {
+    cat(i, &quot;\n&quot;, sep = &quot;&quot;)
+    e &lt;- if (i == 3L) {
+        cat(sqrt(i), &quot;\n&quot;, sep = &quot;&quot;)
+    }
+    cat(i^2, &quot;\n&quot;, sep = &quot;&quot;)
+}</command>
+ <property/>
+ <option type="com.ef_prime.rflow.node.base.FreeNodeModel"/>
+</node>
+<node id="6" x="440" y="480">
+ <command>a &lt;- 1</command>
+ <property/>
+ <option type="com.ef_prime.rflow.node.base.FreeNodeModel"/>
+</node>
+<node id="7" x="440" y="560">
+ <command>while (a &lt; 10) {
+    cat(&quot;Hello\n&quot;)
+    a &lt;- a + 1
+}</command>
+ <property/>
+ <option type="com.ef_prime.rflow.node.base.FreeNodeModel"/>
+</node>
+<node id="8" x="440" y="640">
+ <command>repeat {
+    p &lt;- 1
+    i &lt;- 1
+    error = -0.2 * log((1/runif(60, 0, 1)) - 1)
+    z = (p &lt; 0.5 + error)
+    z = replace(z, z == TRUE, 1)
+    if (sum(z[(3 * i - 2):(3 * i)]) != 0) {
+        break
+    }
+}</command>
+ <property/>
+ <option type="com.ef_prime.rflow.node.base.FreeNodeModel"/>
+</node>
+<node id="9" x="440" y="720">
+ <command>p &lt;- 1</command>
+ <property/>
+ <option type="com.ef_prime.rflow.node.base.FreeNodeModel"/>
+</node>
+<node id="10" x="440" y="800">
+ <command>error = -0.2 * log((1/runif(60, 0, 1)) - 1)</command>
+ <property/>
+ <option type="com.ef_prime.rflow.node.base.FreeNodeModel"/>
+</node>
+<node id="11" x="440" y="880">
+ <command>z = (p &lt; 0.5 + error)</command>
+ <property/>
+ <option type="com.ef_prime.rflow.node.base.FreeNodeModel"/>
+</node>
+<node id="12" x="440" y="960">
+ <command>{
+    {
+        y &lt;- sqrt(3)
+    }
+    x &lt;- 1:100
+    mean(x)
+    sd(x)
+}</command>
+ <property/>
+ <option type="com.ef_prime.rflow.node.base.FreeNodeModel"/>
+</node>
+<node id="13" x="440" y="1040">
+ <command>get_formals_from_method_definition &lt;- function(m) {
+    methods::unRematchDefinition(m)
+}</command>
+ <property/>
+ <option type="com.ef_prime.rflow.node.base.FreeNodeModel"/>
+</node>
+<node id="14" x="440" y="1120">
+ <command>testfun &lt;- function(x = 1L) {
+    x &lt;- x + 1L
+    if (x &gt; 3L) 
+        return(&quot;x is greater than 3&quot;)
+    &quot;x is not greater than 3&quot;
+}</command>
+ <property/>
+ <option type="com.ef_prime.rflow.node.base.FreeNodeModel"/>
+</node>
+<edge from="1" to="2"/>
+<edge from="2" to="3"/>
+<edge from="3" to="4"/>
+<edge from="4" to="5"/>
+<edge from="5" to="6"/>
+<edge from="6" to="7"/>
+<edge from="7" to="8"/>
+<edge from="8" to="9"/>
+<edge from="9" to="10"/>
+<edge from="10" to="11"/>
+<edge from="11" to="12"/>
+<edge from="12" to="13"/>
+<edge from="13" to="14"/>
+ </graph>
+ <task>
+  <taskgroup>
+   <taskproperty>
+    <entry key="title">Task</entry>
+   </taskproperty>
+  </taskgroup>
+ </task>
+</rflow>
