@@ -7,7 +7,7 @@ NULL
 #' @author Lukasz Daniel
 #' @param file A file containing R code.
 #' @param text A text containing R code.
-#' @param max.level Non-negative integer or NA. Maximal level to which diagram may be expanded. NA means no limit.
+#' @param max.level Non-negative integer or NA. Maximum level to which diagram may be expanded. NA means no limit.
 #' @param output An output rflow file. If a 'file' argument is specified, 'output' argument is
 #'               assumed to have the same file name as in 'file' but with rflow extension.
 #' @return xml formated R code

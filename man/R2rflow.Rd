@@ -14,7 +14,7 @@ R2rflow(text = NULL, file = NULL, output = NULL, max.level = NA)
 \item{output}{An output rflow file. If a 'file' argument is specified, 'output' argument is
 assumed to have the same file name as in 'file' but with rflow extension.}
 
-\item{max.level}{Non-negative integer or NA. Maximal level to which diagram may be expanded. NA means no limit.}
+\item{max.level}{Non-negative integer or NA. Maximum level to which diagram may be expanded. NA means no limit.}
 }
 \value{
 xml formated R code
