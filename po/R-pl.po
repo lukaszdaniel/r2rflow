@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: R2rflow\n"
-"Report-Msgid-Bugs-To: bugs.r-project.org\n"
-"POT-Creation-Date: 2014-12-31 06:21\n"
+"Report-Msgid-Bugs-To: lukasz.daniel@gmail.com\n"
+"POT-Creation-Date: 2015-01-01 19:38\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Łukasz Daniel <lukasz.daniel@gmail.com>\n"
 "Language-Team: Łukasz Daniel <lukasz.daniel@gmail.com>\n"
@@ -16,10 +16,11 @@ msgstr ""
 "X-Poedit-SourceCharset: iso-8859-1\n"
 "X-Generator: Poedit 1.5.4\n"
 
-#. R/R2rflow.R: stop("'max.level' argument cannot be negative", domain = "R-R2rflow")
+#. R/R2rflow.R: stop("'max.level' argument must be non-negative integer or NA value", domain = "R-R2rflow")
 #: R/R2rflow.R:0
-msgid "'max.level' argument cannot be negative"
-msgstr "argument 'max.level' nie może być wartością ujemną"
+msgid "'max.level' argument must be non-negative integer or NA value"
+msgstr ""
+"argument 'max.level' musi być nieujemną liczbą całkowitą lub wartością NA"
 
 #. R/R2rflow.R: stop("'output' argument must be specified", domain = "R-R2rflow")
 #: R/R2rflow.R:0

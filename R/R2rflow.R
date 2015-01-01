@@ -1,21 +1,21 @@
 #' @import codetools
 NULL
 
-#' Convert R code to rflow file
+#' @title Convert R code to rflow file
 #' 
-#' Takes a file or text argument and prints out rflow xml
+#' @description Takes a file or text argument and prints out rflow xml
 #' @author Lukasz Daniel
 #' @param file A file containing R code.
 #' @param text A text containing R code.
-#' @param max.level Non-negative integer or NA. Maximum level to which diagram may be expanded. NA means no limit.
+#' @param max.level Non-negative integer or NA value. Maximum level to which diagram may be expanded. NA means no limit.
 #' @param output An output rflow file. If a 'file' argument is specified, 'output' argument is
 #'               assumed to have the same file name as in 'file' but with rflow extension.
 #' @return xml formated R code
 #' @export
 R2rflow <- function (text = NULL, file = NULL, output = NULL, max.level = NA) {
   
-  if(!is.na(max.level) && (max.level < 0L)) 
-    stop("'max.level' argument cannot be negative", domain = "R-R2rflow")
+  if(!is.na(max.level) && (!is.integer(max.level) || (max.level < 0L)))
+    stop("'max.level' argument must be non-negative integer or NA value", domain = "R-R2rflow")
   
   if (missing(text) && (missing(file) || nchar(file) == 0L)) {
     stop("No R code to convert", domain = "R-R2rflow")
@@ -41,9 +41,9 @@ R2rflow <- function (text = NULL, file = NULL, output = NULL, max.level = NA) {
   
   edge <- NULL
   w$set("ypos", length(edge))
-  w$set("nodeID", 0)
+  w$set("nodeID", 0L)
   w$set("output", output)
-  w$set("level", 0)
+  w$set("level", 0L)
   w$set("max.level", max.level)
   
   Preambule(output)
@@ -51,16 +51,16 @@ R2rflow <- function (text = NULL, file = NULL, output = NULL, max.level = NA) {
   cat(' <graph version="0.3" width="894" height="742" locationtype="a" offsetx="0" offsety="0">\n', append = TRUE, file = output)
   Settings(output)
   
-  if(is.na(w$get("max.level")) || (w$get("level") < w$get("max.level"))) {
-    w$set("level", w$get("level") + 1)
+  if(is.na(max.level) || (max.level > 0L)) {
+    w$set("level", w$get("level") + 1L)
     for(i in seq_len(length(codes))) {
-      edge <- c(edge, w$get("nodeID") + 1)
+      edge <- c(edge, w$get("nodeID") + 1L)
       w$set("ypos", length(edge))
       walkCode(codes[[i]], w)
     }
-    w$set("level", w$get("level") - 1)
+    w$set("level", w$get("level") - 1L)
   } else { 
-    edge <- c(edge, w$get("nodeID") + 1)
+    edge <- c(edge, w$get("nodeID") + 1L)
     w$set("ypos", length(edge))
     FreeNodeModel(codes, w)
   }
@@ -74,14 +74,14 @@ R2rflow <- function (text = NULL, file = NULL, output = NULL, max.level = NA) {
 deparseTreeExp <- function (e) {
   
   if(!is.expression(e))
-    e <- deparse(e, width.cutoff = 400, backtick = TRUE)
+    e <- deparse(e, width.cutoff = 400L, backtick = TRUE)
   
   return(ReplaceChr(paste(e, sep = "", collapse = "\n")))
 }
 
 functionCall <- function (e, w) {
   
-  w$set("nodeID", w$get("nodeID") + 1)
+  w$set("nodeID", w$get("nodeID") + 1L)
   if(is.na(w$get("max.level")) || (w$get("level") < w$get("max.level"))) {
     if ((e[[1]] == "<-") && (length(e[[3]]) == 4L) && (e[[3]][[1]] == "function")) {
       FunctionNodeModel(e,w)
@@ -103,7 +103,7 @@ functionCall <- function (e, w) {
 }
 
 functionLeaf <- function (e, w) {
-  w$set("nodeID", w$get("nodeID") + 1)
+  w$set("nodeID", w$get("nodeID") + 1L)
   FreeNodeModel(e,w)
   NULL
 } 
@@ -126,27 +126,27 @@ FunctionNodeModel <- function (e, w) {
   cat(sprintf('   <graph version="0.3" width="%d" height="%d" locationtype="a" offsetx="0" offsety="0">\n', x, y), append = TRUE, file = output)
   
   
-  w$set("nodeID", w$get("nodeID") + 1)
+  w$set("nodeID", w$get("nodeID") + 1L)
   In <- w$get("nodeID")
   edge <- In
   w$set("ypos", length(edge))
   TunnelNodeModel(type = "in", w = w)
   
-  w$set("level", w$get("level") + 1)
+  w$set("level", w$get("level") + 1L)
   if ((length(e[[3]][[3]]) > 1L) && CurlyBracket(e[[3]][[3]][[1]])) {
     for (ee in as.list(e[[3]][[3]])) if (!missing(ee) && !CurlyBracket(deparseTreeExp(ee)))  {
-      edge <- c(edge, w$get("nodeID") + 1)
+      edge <- c(edge, w$get("nodeID") + 1L)
       w$set("ypos", length(edge))
       walkCode(ee, w)
     }
   } else {
-    edge <- c(edge, w$get("nodeID") + 1)
+    edge <- c(edge, w$get("nodeID") + 1L)
     w$set("ypos", length(edge))
     walkCode(e[[3]][[3]], w)
   }
-  w$set("level", w$get("level") - 1)
+  w$set("level", w$get("level") - 1L)
   
-  w$set("nodeID", w$get("nodeID") + 1)
+  w$set("nodeID", w$get("nodeID") + 1L)
   Out <- w$get("nodeID")
   edge <- c(edge, Out)
   w$set("ypos", length(edge))
@@ -177,27 +177,27 @@ IfNodeModel <- function (e, w) {
   cat('<subflow>\n', append = TRUE, file = output)
   cat(sprintf(' <graph version="0.3" width="%d" height="%d" locationtype="a" offsetx="0" offsety="0">\n', x, y), append = TRUE, file = output)
   
-  w$set("nodeID", w$get("nodeID") + 1)
+  w$set("nodeID", w$get("nodeID") + 1L)
   In <- w$get("nodeID")
   edge <- In
   w$set("ypos", length(edge))
   TunnelNodeModel(type = "in", w = w)
   
-  w$set("level", w$get("level") + 1)
+  w$set("level", w$get("level") + 1L)
   if ((length(e[[3]]) > 1L) && CurlyBracket(e[[3]][[1]])) {
     for (ee in as.list(e[[3]])) if (!missing(ee) && !CurlyBracket(deparseTreeExp(ee))) {
-      edge <- c(edge, w$get("nodeID") + 1)
+      edge <- c(edge, w$get("nodeID") + 1L)
       w$set("ypos", length(edge))
       walkCode(ee, w)
     }
   } else {
-    edge <- c(edge, w$get("nodeID") + 1)
+    edge <- c(edge, w$get("nodeID") + 1L)
     w$set("ypos", length(edge))
     walkCode(e[[3]], w)
   }
-  w$set("level", w$get("level") - 1)
+  w$set("level", w$get("level") - 1L)
   
-  w$set("nodeID", w$get("nodeID") + 1)
+  w$set("nodeID", w$get("nodeID") + 1L)
   Out <- w$get("nodeID")
   edge <- c(edge, Out)
   w$set("ypos", length(edge))
@@ -210,29 +210,29 @@ IfNodeModel <- function (e, w) {
   cat('<subflow>\n', append = TRUE, file = output)
   cat(sprintf(' <graph version="0.3" width="%d" height="%d" locationtype="a" offsetx="0" offsety="0">\n', x, y), append = TRUE, file = output)
   
-  w$set("nodeID", w$get("nodeID") + 1)
+  w$set("nodeID", w$get("nodeID") + 1L)
   In <- w$get("nodeID")
   edge <- In
   w$set("ypos", length(edge))
   TunnelNodeModel(type = "in", w = w)
   
-  w$set("level", w$get("level") + 1)
+  w$set("level", w$get("level") + 1L)
   if (length(e) == 4L) {
     if ((length(e[[4]]) > 1L) && CurlyBracket(e[[4]][[1]])) {
       for (ee in as.list(e[[4]])) if (!missing(ee) && !CurlyBracket(deparseTreeExp(ee)))  {
-        edge <- c(edge, w$get("nodeID") + 1)
+        edge <- c(edge, w$get("nodeID") + 1L)
         w$set("ypos", length(edge))
         walkCode(ee, w)
       }
     } else {
-      edge <- c(edge, w$get("nodeID") + 1)
+      edge <- c(edge, w$get("nodeID") + 1L)
       w$set("ypos", length(edge))
       walkCode(e[[4]], w)
     }
   } 
-  w$set("level", w$get("level") - 1)
+  w$set("level", w$get("level") - 1L)
   
-  w$set("nodeID", w$get("nodeID") + 1)
+  w$set("nodeID", w$get("nodeID") + 1L)
   Out <- w$get("nodeID")
   edge <- c(edge, Out)
   w$set("ypos", length(edge))
@@ -263,27 +263,27 @@ ForNodeModel <- function (e, w) {
   cat(sprintf('   <graph version="0.3" width="%d" height="%d" locationtype="a" offsetx="0" offsety="0">\n', x, y), append = TRUE, file = output)
   
   
-  w$set("nodeID", w$get("nodeID") + 1)
+  w$set("nodeID", w$get("nodeID") + 1L)
   In <- w$get("nodeID")
   edge <- In
   w$set("ypos", length(edge))
   TunnelNodeModel(type = "in", w = w)
   
-  w$set("level", w$get("level") + 1)
+  w$set("level", w$get("level") + 1L)
   if ((length(e[[4]]) > 1L) && CurlyBracket(e[[4]][[1]])) {
     for (ee in as.list(e[[4]])) if (!missing(ee) && !CurlyBracket(deparseTreeExp(ee))) {
-      edge <- c(edge, w$get("nodeID") + 1)
+      edge <- c(edge, w$get("nodeID") + 1L)
       w$set("ypos", length(edge))
       walkCode(ee, w)
     }
   } else {
-    edge <- c(edge, w$get("nodeID") + 1)
+    edge <- c(edge, w$get("nodeID") + 1L)
     w$set("ypos", length(edge))
     walkCode(e[[4]], w)
   }
-  w$set("level", w$get("level") - 1)
+  w$set("level", w$get("level") - 1L)
   
-  w$set("nodeID", w$get("nodeID") + 1)
+  w$set("nodeID", w$get("nodeID") + 1L)
   Out <- w$get("nodeID")
   edge <- c(edge, Out)
   w$set("ypos", length(edge))
@@ -313,27 +313,27 @@ WhileNodeModel <- function (e, w) {
   cat(sprintf('   <graph version="0.3" width="%d" height="%d" locationtype="a" offsetx="0" offsety="0">\n', x, y), append = TRUE, file = output)
   
   
-  w$set("nodeID", w$get("nodeID") + 1)
+  w$set("nodeID", w$get("nodeID") + 1L)
   In <- w$get("nodeID")
   edge <- In
   w$set("ypos", length(edge))
   TunnelNodeModel(type = "in", w = w)
   
-  w$set("level", w$get("level") + 1)
+  w$set("level", w$get("level") + 1L)
   if ((length(e[[3]]) > 1L) && CurlyBracket(e[[3]][[1]])) {
     for (ee in as.list(e[[3]])) if (!missing(ee) && !CurlyBracket(deparseTreeExp(ee))) {
-      edge <- c(edge, w$get("nodeID") + 1)
+      edge <- c(edge, w$get("nodeID") + 1L)
       w$set("ypos", length(edge))
       walkCode(ee, w)
     }
   } else {
-    edge <- c(edge, w$get("nodeID") + 1)
+    edge <- c(edge, w$get("nodeID") + 1L)
     w$set("ypos", length(edge))
     walkCode(e[[3]], w)
   }
-  w$set("level", w$get("level") - 1)
+  w$set("level", w$get("level") - 1L)
   
-  w$set("nodeID", w$get("nodeID") + 1)
+  w$set("nodeID", w$get("nodeID") + 1L)
   Out <- w$get("nodeID")
   edge <- c(edge, Out)
   w$set("ypos", length(edge))
@@ -361,27 +361,27 @@ RepeatNodeModel <- function (e, w) {
   cat("  <subflow>\n", append = TRUE, file = output)
   cat(sprintf('   <graph version="0.3" width="%d" height="%d" locationtype="a" offsetx="0" offsety="0">\n', x, y), append = TRUE, file = output)
   
-  w$set("nodeID", w$get("nodeID") + 1)
+  w$set("nodeID", w$get("nodeID") + 1L)
   In <- w$get("nodeID")
   edge <- In
   w$set("ypos", length(edge))
   TunnelNodeModel(type = "in", w = w)
   
-  w$set("level", w$get("level") + 1)
+  w$set("level", w$get("level") + 1L)
   if ((length(e[[2]]) > 1L) && CurlyBracket(e[[2]][[1]])) {
     for (ee in as.list(e[[2]])) if (!missing(ee) && !CurlyBracket(deparseTreeExp(ee))) {
-      edge <- c(edge, w$get("nodeID") + 1)
+      edge <- c(edge, w$get("nodeID") + 1L)
       w$set("ypos", length(edge))
       walkCode(ee, w)
     }
   } else {
-    edge <- c(edge, w$get("nodeID") + 1)
+    edge <- c(edge, w$get("nodeID") + 1L)
     w$set("ypos", length(edge))
     walkCode(e[[2]], w)
   }
-  w$set("level", w$get("level") - 1)
+  w$set("level", w$get("level") - 1L)
   
-  w$set("nodeID", w$get("nodeID") + 1)
+  w$set("nodeID", w$get("nodeID") + 1L)
   Out <- w$get("nodeID")
   edge <- c(edge, Out)
   w$set("ypos", length(edge))
@@ -408,21 +408,21 @@ SubflowNodeModel <- function (e, w) {
   cat("  <subflow>\n", append = TRUE, file = output)
   cat(sprintf('   <graph version="0.3" width="%d" height="%d" locationtype="a" offsetx="100" offsety="50">\n', x, y), append = TRUE, file = output)
   
-  w$set("nodeID", w$get("nodeID") + 1)
+  w$set("nodeID", w$get("nodeID") + 1L)
   In <- w$get("nodeID")
   edge <- In
   w$set("ypos", length(edge))
   TunnelNodeModel(type = "in", w = w)
   
-  w$set("level", w$get("level") + 1)
+  w$set("level", w$get("level") + 1L)
   for (ee in as.list(e)) if (!missing(ee) && !CurlyBracket(deparseTreeExp(ee))) {
-    edge <- c(edge, w$get("nodeID") + 1)
+    edge <- c(edge, w$get("nodeID") + 1L)
     w$set("ypos", length(edge))
     walkCode(ee, w)
   }
-  w$set("level", w$get("level") - 1)
+  w$set("level", w$get("level") - 1L)
   
-  w$set("nodeID", w$get("nodeID") + 1)
+  w$set("nodeID", w$get("nodeID") + 1L)
   Out <- w$get("nodeID")
   edge <- c(edge, Out)
   w$set("ypos", length(edge))

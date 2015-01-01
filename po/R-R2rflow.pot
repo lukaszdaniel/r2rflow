@@ -1,7 +1,8 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: R2rflow 4.0\n"
-"POT-Creation-Date: 2014-12-31 06:21\n"
+"Project-Id-Version: R2rflow 4.1\n"
+"Report-Msgid-Bugs-To: lukasz.daniel@gmail.com\n"
+"POT-Creation-Date: 2015-01-01 19:38\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -12,9 +13,9 @@ msgstr ""
 
 
 #: R/R2rflow.R: 0
-#. R/R2rflow.R: stop("'max.level' argument cannot be negative", domain = "R-R2rflow")
+#. R/R2rflow.R: stop("'max.level' argument must be non-negative integer or NA value", domain = "R-R2rflow")
 
-msgid "'max.level' argument cannot be negative"
+msgid "'max.level' argument must be non-negative integer or NA value"
 msgstr ""
 
 
