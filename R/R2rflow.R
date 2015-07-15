@@ -96,14 +96,14 @@ functionCall <- function (e, w) {
     } else if (CurlyBracket(e[[1]])) {
       SubflowNodeModel(e,w)
     } else {
-      FreeNodeModel(e,w)
+      functionLeaf(e,w)
     }
   } else
-    FreeNodeModel(e,w)
+    functionLeaf(e,w)
 }
 
 functionLeaf <- function (e, w) {
-  w$set("nodeID", w$get("nodeID") + 1L)
+  #w$set("nodeID", w$get("nodeID") + 1L)
   FreeNodeModel(e,w)
   NULL
 } 

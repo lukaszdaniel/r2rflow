@@ -1,7 +1,7 @@
 Package: R2rflow
 Type: Package
 Title: R code to rflow (xml) format converter
-Version: 4.1
+Version: 4.2
 Date: 2015-01-01
 Author: Lukasz Daniel <lukasz.daniel@gmail.com>
 Maintainer: Lukasz Daniel <lukasz.daniel@gmail.com>
