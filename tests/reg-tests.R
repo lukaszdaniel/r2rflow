@@ -67,3 +67,13 @@ testfun <- function(x = 1L) {
  if(x > 3L) return("x is greater than 3")
  "x is not greater than 3"
 }
+
+#11: reg-tests
+if(require("R2rflow")) {
+  R2rflow(file = "reg-tests.R", max.level = 0L, output = "reg-tests-0.rflow")
+  R2rflow(file = "reg-tests.R", max.level = 1L, output = "reg-tests-1.rflow")
+  R2rflow(file = "reg-tests.R", max.level = NA, output = "reg-tests-NA.rflow")
+  stopifnot(tools::md5sum("reg-tests-0.rflow") == tools::md5sum("reg-tests-0.rflow.save"))
+  stopifnot(tools::md5sum("reg-tests-1.rflow") == tools::md5sum("reg-tests-1.rflow.save"))
+  stopifnot(tools::md5sum("reg-tests-NA.rflow") == tools::md5sum("reg-tests-NA.rflow.save"))
+}

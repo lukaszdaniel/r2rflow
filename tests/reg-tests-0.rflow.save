@@ -78,6 +78,14 @@ testfun &lt;- function(x = 1) {
     if (x &gt; 3) 
         return(&quot;x is greater than 3&quot;)
     &quot;x is not greater than 3&quot;
+}
+if (require(&quot;R2rflow&quot;)) {
+    R2rflow(file = &quot;reg-tests.R&quot;, max.level = 0, output = &quot;reg-tests-0.rflow&quot;)
+    R2rflow(file = &quot;reg-tests.R&quot;, max.level = 1, output = &quot;reg-tests-1.rflow&quot;)
+    R2rflow(file = &quot;reg-tests.R&quot;, max.level = NA, output = &quot;reg-tests-NA.rflow&quot;)
+    stopifnot(tools::md5sum(&quot;reg-tests-0.rflow&quot;) == tools::md5sum(&quot;reg-tests-0.rflow.save&quot;))
+    stopifnot(tools::md5sum(&quot;reg-tests-1.rflow&quot;) == tools::md5sum(&quot;reg-tests-1.rflow.save&quot;))
+    stopifnot(tools::md5sum(&quot;reg-tests-NA.rflow&quot;) == tools::md5sum(&quot;reg-tests-NA.rflow.save&quot;))
 }</command>
  <property/>
  <option type="com.ef_prime.rflow.node.base.FreeNodeModel"/>

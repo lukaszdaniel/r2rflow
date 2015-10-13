@@ -703,6 +703,93 @@
   </subflow>
  </option>
 </node>
+<node id="82" x="440" y="1200">
+ <command>if (require(&quot;R2rflow&quot;)) {
+    R2rflow(file = &quot;reg-tests.R&quot;, max.level = 0L, output = &quot;reg-tests-0.rflow&quot;)
+    R2rflow(file = &quot;reg-tests.R&quot;, max.level = 1L, output = &quot;reg-tests-1.rflow&quot;)
+    R2rflow(file = &quot;reg-tests.R&quot;, max.level = NA, output = &quot;reg-tests-NA.rflow&quot;)
+    stopifnot(tools::md5sum(&quot;reg-tests-0.rflow&quot;) == tools::md5sum(&quot;reg-tests-0.rflow.save&quot;))
+    stopifnot(tools::md5sum(&quot;reg-tests-1.rflow&quot;) == tools::md5sum(&quot;reg-tests-1.rflow.save&quot;))
+    stopifnot(tools::md5sum(&quot;reg-tests-NA.rflow&quot;) == tools::md5sum(&quot;reg-tests-NA.rflow.save&quot;))
+}</command>
+ <property/>
+ <option type="com.ef_prime.rflow.node.base.IfNodeModel">
+  <entry key="condition">require(&quot;R2rflow&quot;)</entry>
+<subflow>
+ <graph version="0.3" width="688" height="700" locationtype="a" offsetx="0" offsety="0">
+<node id="83" x="440" y="80">
+ <command></command>
+ <property/>
+ <option type="com.ef_prime.rflow.node.base.TunnelNodeModel">
+  <entry key="io">in</entry>
+ </option>
+</node>
+<node id="84" x="440" y="160">
+ <command>R2rflow(file = &quot;reg-tests.R&quot;, max.level = 0L, output = &quot;reg-tests-0.rflow&quot;)</command>
+ <property/>
+ <option type="com.ef_prime.rflow.node.base.FreeNodeModel"/>
+</node>
+<node id="85" x="440" y="240">
+ <command>R2rflow(file = &quot;reg-tests.R&quot;, max.level = 1L, output = &quot;reg-tests-1.rflow&quot;)</command>
+ <property/>
+ <option type="com.ef_prime.rflow.node.base.FreeNodeModel"/>
+</node>
+<node id="86" x="440" y="320">
+ <command>R2rflow(file = &quot;reg-tests.R&quot;, max.level = NA, output = &quot;reg-tests-NA.rflow&quot;)</command>
+ <property/>
+ <option type="com.ef_prime.rflow.node.base.FreeNodeModel"/>
+</node>
+<node id="87" x="440" y="400">
+ <command>stopifnot(tools::md5sum(&quot;reg-tests-0.rflow&quot;) == tools::md5sum(&quot;reg-tests-0.rflow.save&quot;))</command>
+ <property/>
+ <option type="com.ef_prime.rflow.node.base.FreeNodeModel"/>
+</node>
+<node id="88" x="440" y="480">
+ <command>stopifnot(tools::md5sum(&quot;reg-tests-1.rflow&quot;) == tools::md5sum(&quot;reg-tests-1.rflow.save&quot;))</command>
+ <property/>
+ <option type="com.ef_prime.rflow.node.base.FreeNodeModel"/>
+</node>
+<node id="89" x="440" y="560">
+ <command>stopifnot(tools::md5sum(&quot;reg-tests-NA.rflow&quot;) == tools::md5sum(&quot;reg-tests-NA.rflow.save&quot;))</command>
+ <property/>
+ <option type="com.ef_prime.rflow.node.base.FreeNodeModel"/>
+</node>
+<node id="90" x="440" y="640">
+ <command></command>
+ <property/>
+ <option type="com.ef_prime.rflow.node.base.TunnelNodeModel">
+  <entry key="io">out</entry>
+ </option>
+</node>
+<edge from="83" to="84"/>
+<edge from="84" to="85"/>
+<edge from="85" to="86"/>
+<edge from="86" to="87"/>
+<edge from="87" to="88"/>
+<edge from="88" to="89"/>
+<edge from="89" to="90"/>
+ </graph>
+</subflow>
+<subflow>
+ <graph version="0.3" width="688" height="700" locationtype="a" offsetx="0" offsety="0">
+<node id="91" x="440" y="80">
+ <command></command>
+ <property/>
+ <option type="com.ef_prime.rflow.node.base.TunnelNodeModel">
+  <entry key="io">in</entry>
+ </option>
+</node>
+<node id="92" x="440" y="160">
+ <command></command>
+ <property/>
+ <option type="com.ef_prime.rflow.node.base.TunnelNodeModel">
+  <entry key="io">out</entry>
+ </option>
+</node>
+ </graph>
+</subflow>
+ </option>
+</node>
 <edge from="1" to="5"/>
 <edge from="5" to="6"/>
 <edge from="6" to="24"/>
@@ -716,6 +803,7 @@
 <edge from="56" to="57"/>
 <edge from="57" to="67"/>
 <edge from="67" to="71"/>
+<edge from="71" to="82"/>
  </graph>
  <task>
   <taskgroup>

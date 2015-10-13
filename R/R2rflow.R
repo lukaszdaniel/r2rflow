@@ -2,7 +2,7 @@
 NULL
 
 #' @title Convert R code to rflow file
-#' 
+#'
 #' @description Takes a file or text argument and prints out rflow xml
 #' @author Lukasz Daniel
 #' @param file A file containing R code.
@@ -13,10 +13,10 @@ NULL
 #' @return xml formated R code
 #' @export
 R2rflow <- function (text = NULL, file = NULL, output = NULL, max.level = NA) {
-  
+
   if(!is.na(max.level) && (!is.integer(max.level) || (max.level < 0L)))
     stop("'max.level' argument must be non-negative integer or NA value", domain = "R-R2rflow")
-  
+
   if (missing(text) && (missing(file) || nchar(file) == 0L)) {
     stop("No R code to convert", domain = "R-R2rflow")
   }
@@ -29,28 +29,28 @@ R2rflow <- function (text = NULL, file = NULL, output = NULL, max.level = NA) {
   else if(!missing(file) && missing(output)) {
     output <- sub("(\\.[RrSq])?$", "\\.rflow", file)
   }
-  
+
   codes <- parse(text = text, file = file)
   env <- new.env()
-  
+
   functionSet <- function (v, e) assign(v, e, envir = env)
   functionGet <- function (v, e) get(v, envir = env)
-  
+
   w <- makeCodeWalker(call = functionCall, leaf = functionLeaf, set = functionSet, get = functionGet)
-  
-  
+
+
   edge <- NULL
   w$set("ypos", length(edge))
   w$set("nodeID", 0L)
   w$set("output", output)
   w$set("level", 0L)
   w$set("max.level", max.level)
-  
+
   Preambule(output)
   cat('<rflow>\n', append = TRUE, file = output)
   cat(' <graph version="0.3" width="894" height="742" locationtype="a" offsetx="0" offsety="0">\n', append = TRUE, file = output)
   Settings(output)
-  
+
   if(is.na(max.level) || (max.level > 0L)) {
     w$set("level", w$get("level") + 1L)
     for(i in seq_len(length(codes))) {
@@ -59,12 +59,12 @@ R2rflow <- function (text = NULL, file = NULL, output = NULL, max.level = NA) {
       walkCode(codes[[i]], w)
     }
     w$set("level", w$get("level") - 1L)
-  } else { 
+  } else {
     edge <- c(edge, w$get("nodeID") + 1L)
     w$set("ypos", length(edge))
     FreeNodeModel(codes, w)
   }
-  
+
   PrintEdges(edge, file = output)
   cat(' </graph>\n', append = TRUE, file = output)
   Task(output)
@@ -72,15 +72,15 @@ R2rflow <- function (text = NULL, file = NULL, output = NULL, max.level = NA) {
 }
 
 deparseTreeExp <- function (e) {
-  
+
   if(!is.expression(e))
     e <- deparse(e, width.cutoff = 400L, backtick = TRUE)
-  
+
   return(ReplaceChr(paste(e, sep = "", collapse = "\n")))
 }
 
 functionCall <- function (e, w) {
-  
+
   w$set("nodeID", w$get("nodeID") + 1L)
   if(is.na(w$get("max.level")) || (w$get("level") < w$get("max.level"))) {
     if ((e[[1]] == "<-") && (length(e[[3]]) == 4L) && (e[[3]][[1]] == "function")) {
@@ -96,26 +96,26 @@ functionCall <- function (e, w) {
     } else if (CurlyBracket(e[[1]])) {
       SubflowNodeModel(e,w)
     } else {
-      functionLeaf(e,w)
+      FreeNodeModel(e,w)
     }
   } else
-    functionLeaf(e,w)
+    FreeNodeModel(e,w)
 }
 
 functionLeaf <- function (e, w) {
-  #w$set("nodeID", w$get("nodeID") + 1L)
+  w$set("nodeID", w$get("nodeID") + 1L)
   FreeNodeModel(e,w)
   NULL
-} 
+}
 
 FunctionNodeModel <- function (e, w) {
-  
+
   xpos <- 440L
   ypos <- w$get("ypos") * 80L
   x <- 688L
   y <- 700L
   output <- w$get("output")
-  
+
   cat(sprintf('<node id="%d" x="%d" y="%d">\n', w$get("nodeID"), xpos, ypos), append = TRUE, file = output)
   cat(sprintf(' <command>%s</command>\n', deparseTreeExp(e)), append = TRUE, file = output)
   cat(" <property/>\n", append = TRUE, file = output)
@@ -124,14 +124,14 @@ FunctionNodeModel <- function (e, w) {
   cat(sprintf('  <entry key="args">(%s)</entry>\n', gsub("= (,|$)", "\\1", gsub("^(pair)?list\\(|\\)$|^NULL$", "", deparseTreeExp(e[[3]][[2]])))), append = TRUE, file = output)
   cat("  <subflow>\n", append = TRUE, file = output)
   cat(sprintf('   <graph version="0.3" width="%d" height="%d" locationtype="a" offsetx="0" offsety="0">\n', x, y), append = TRUE, file = output)
-  
-  
+
+
   w$set("nodeID", w$get("nodeID") + 1L)
   In <- w$get("nodeID")
   edge <- In
   w$set("ypos", length(edge))
   TunnelNodeModel(type = "in", w = w)
-  
+
   w$set("level", w$get("level") + 1L)
   if ((length(e[[3]][[3]]) > 1L) && CurlyBracket(e[[3]][[3]][[1]])) {
     for (ee in as.list(e[[3]][[3]])) if (!missing(ee) && !CurlyBracket(deparseTreeExp(ee)))  {
@@ -145,15 +145,15 @@ FunctionNodeModel <- function (e, w) {
     walkCode(e[[3]][[3]], w)
   }
   w$set("level", w$get("level") - 1L)
-  
+
   w$set("nodeID", w$get("nodeID") + 1L)
   Out <- w$get("nodeID")
   edge <- c(edge, Out)
   w$set("ypos", length(edge))
   TunnelNodeModel(type = "out", w = w)
-  
+
   PrintEdges(edge, file = output)
-  
+
   cat("   </graph>\n", append = TRUE, file = output)
   cat("  </subflow>\n", append = TRUE, file = output)
   cat(" </option>\n", append = TRUE, file = output)
@@ -161,28 +161,28 @@ FunctionNodeModel <- function (e, w) {
 }
 
 IfNodeModel <- function (e, w) {
-  
+
   xpos <- 440L
   ypos <- w$get("ypos") * 80L
   x <- 688L
   y <- 700L
   output <- w$get("output")
-  
+
   cat(sprintf('<node id="%d" x="%d" y="%d">\n', w$get("nodeID"), xpos, ypos), append = TRUE, file = output)
   cat(sprintf(' <command>%s</command>\n', deparseTreeExp(e)), append = TRUE, file = output)
   cat(' <property/>\n', append = TRUE, file = output)
   cat(' <option type="com.ef_prime.rflow.node.base.IfNodeModel">\n', append = TRUE, file = output)
   cat(sprintf('  <entry key="condition">%s</entry>\n', deparseTreeExp(e[[2]])), append = TRUE, file = output)
-  
+
   cat('<subflow>\n', append = TRUE, file = output)
   cat(sprintf(' <graph version="0.3" width="%d" height="%d" locationtype="a" offsetx="0" offsety="0">\n', x, y), append = TRUE, file = output)
-  
+
   w$set("nodeID", w$get("nodeID") + 1L)
   In <- w$get("nodeID")
   edge <- In
   w$set("ypos", length(edge))
   TunnelNodeModel(type = "in", w = w)
-  
+
   w$set("level", w$get("level") + 1L)
   if ((length(e[[3]]) > 1L) && CurlyBracket(e[[3]][[1]])) {
     for (ee in as.list(e[[3]])) if (!missing(ee) && !CurlyBracket(deparseTreeExp(ee))) {
@@ -196,26 +196,26 @@ IfNodeModel <- function (e, w) {
     walkCode(e[[3]], w)
   }
   w$set("level", w$get("level") - 1L)
-  
+
   w$set("nodeID", w$get("nodeID") + 1L)
   Out <- w$get("nodeID")
   edge <- c(edge, Out)
   w$set("ypos", length(edge))
   TunnelNodeModel(type = "out", w = w)
-  
+
   PrintEdges(edge, file = output)
   cat(' </graph>\n', append = TRUE, file = output)
   cat('</subflow>\n', append = TRUE, file = output)
-  
+
   cat('<subflow>\n', append = TRUE, file = output)
   cat(sprintf(' <graph version="0.3" width="%d" height="%d" locationtype="a" offsetx="0" offsety="0">\n', x, y), append = TRUE, file = output)
-  
+
   w$set("nodeID", w$get("nodeID") + 1L)
   In <- w$get("nodeID")
   edge <- In
   w$set("ypos", length(edge))
   TunnelNodeModel(type = "in", w = w)
-  
+
   w$set("level", w$get("level") + 1L)
   if (length(e) == 4L) {
     if ((length(e[[4]]) > 1L) && CurlyBracket(e[[4]][[1]])) {
@@ -229,25 +229,25 @@ IfNodeModel <- function (e, w) {
       w$set("ypos", length(edge))
       walkCode(e[[4]], w)
     }
-  } 
+  }
   w$set("level", w$get("level") - 1L)
-  
+
   w$set("nodeID", w$get("nodeID") + 1L)
   Out <- w$get("nodeID")
   edge <- c(edge, Out)
   w$set("ypos", length(edge))
   TunnelNodeModel(type = "out", w = w)
-  
+
   if(length(edge) > 2L) PrintEdges(edge, file = output)
   cat(' </graph>\n', append = TRUE, file = output)
   cat('</subflow>\n', append = TRUE, file = output)
   cat(' </option>\n', append = TRUE, file = output)
   cat('</node>\n', append = TRUE, file = output)
-  
+
 }
 
 ForNodeModel <- function (e, w) {
-  
+
   xpos <- 440L
   ypos <- w$get("ypos") * 80L
   x <- 688L
@@ -261,14 +261,14 @@ ForNodeModel <- function (e, w) {
   cat(sprintf('  <entry key="condition">%s</entry>\n', paste(deparseTreeExp(e[[2]]), " in ", deparseTreeExp(e[[3]]), sep = "", collase = "")), append = TRUE, file = output)
   cat("  <subflow>\n", append = TRUE, file = output)
   cat(sprintf('   <graph version="0.3" width="%d" height="%d" locationtype="a" offsetx="0" offsety="0">\n', x, y), append = TRUE, file = output)
-  
-  
+
+
   w$set("nodeID", w$get("nodeID") + 1L)
   In <- w$get("nodeID")
   edge <- In
   w$set("ypos", length(edge))
   TunnelNodeModel(type = "in", w = w)
-  
+
   w$set("level", w$get("level") + 1L)
   if ((length(e[[4]]) > 1L) && CurlyBracket(e[[4]][[1]])) {
     for (ee in as.list(e[[4]])) if (!missing(ee) && !CurlyBracket(deparseTreeExp(ee))) {
@@ -282,13 +282,13 @@ ForNodeModel <- function (e, w) {
     walkCode(e[[4]], w)
   }
   w$set("level", w$get("level") - 1L)
-  
+
   w$set("nodeID", w$get("nodeID") + 1L)
   Out <- w$get("nodeID")
   edge <- c(edge, Out)
   w$set("ypos", length(edge))
   TunnelNodeModel(type = "out", w = w)
-  
+
   PrintEdges(edge, file = output)
   cat("   </graph>\n", append = TRUE, file = output)
   cat("  </subflow>\n", append = TRUE, file = output)
@@ -297,7 +297,7 @@ ForNodeModel <- function (e, w) {
 }
 
 WhileNodeModel <- function (e, w) {
-  
+
   xpos <- 440L
   ypos <- w$get("ypos") * 80L
   x <- 688L
@@ -311,14 +311,14 @@ WhileNodeModel <- function (e, w) {
   cat(sprintf('  <entry key="condition">%s</entry>\n', deparseTreeExp(e[[2]])), append = TRUE, file = output)
   cat("  <subflow>\n", append = TRUE, file = output)
   cat(sprintf('   <graph version="0.3" width="%d" height="%d" locationtype="a" offsetx="0" offsety="0">\n', x, y), append = TRUE, file = output)
-  
-  
+
+
   w$set("nodeID", w$get("nodeID") + 1L)
   In <- w$get("nodeID")
   edge <- In
   w$set("ypos", length(edge))
   TunnelNodeModel(type = "in", w = w)
-  
+
   w$set("level", w$get("level") + 1L)
   if ((length(e[[3]]) > 1L) && CurlyBracket(e[[3]][[1]])) {
     for (ee in as.list(e[[3]])) if (!missing(ee) && !CurlyBracket(deparseTreeExp(ee))) {
@@ -332,13 +332,13 @@ WhileNodeModel <- function (e, w) {
     walkCode(e[[3]], w)
   }
   w$set("level", w$get("level") - 1L)
-  
+
   w$set("nodeID", w$get("nodeID") + 1L)
   Out <- w$get("nodeID")
   edge <- c(edge, Out)
   w$set("ypos", length(edge))
   TunnelNodeModel(type = "out", w = w)
-  
+
   PrintEdges(edge, file = output)
   cat("   </graph>\n", append = TRUE, file = output)
   cat("  </subflow>\n", append = TRUE, file = output)
@@ -347,7 +347,7 @@ WhileNodeModel <- function (e, w) {
 }
 
 RepeatNodeModel <- function (e, w) {
-  
+
   xpos <- 440L
   ypos <- w$get("ypos") * 80L
   x <- 688L
@@ -360,13 +360,13 @@ RepeatNodeModel <- function (e, w) {
   cat('  <entry key="loop">repeat</entry>\n', append = TRUE, file = output)
   cat("  <subflow>\n", append = TRUE, file = output)
   cat(sprintf('   <graph version="0.3" width="%d" height="%d" locationtype="a" offsetx="0" offsety="0">\n', x, y), append = TRUE, file = output)
-  
+
   w$set("nodeID", w$get("nodeID") + 1L)
   In <- w$get("nodeID")
   edge <- In
   w$set("ypos", length(edge))
   TunnelNodeModel(type = "in", w = w)
-  
+
   w$set("level", w$get("level") + 1L)
   if ((length(e[[2]]) > 1L) && CurlyBracket(e[[2]][[1]])) {
     for (ee in as.list(e[[2]])) if (!missing(ee) && !CurlyBracket(deparseTreeExp(ee))) {
@@ -380,13 +380,13 @@ RepeatNodeModel <- function (e, w) {
     walkCode(e[[2]], w)
   }
   w$set("level", w$get("level") - 1L)
-  
+
   w$set("nodeID", w$get("nodeID") + 1L)
   Out <- w$get("nodeID")
   edge <- c(edge, Out)
   w$set("ypos", length(edge))
   TunnelNodeModel(type = "out", w = w)
-  
+
   PrintEdges(edge, file = output)
   cat("   </graph>\n", append = TRUE, file = output)
   cat("  </subflow>\n", append = TRUE, file = output)
@@ -395,7 +395,7 @@ RepeatNodeModel <- function (e, w) {
 }
 
 SubflowNodeModel <- function (e, w) {
-  
+
   xpos <- 440L
   ypos <- w$get("ypos") * 80L
   x <- 688L
@@ -407,13 +407,13 @@ SubflowNodeModel <- function (e, w) {
   cat(' <option type="com.ef_prime.rflow.node.base.SubflowNodeModel">\n', append = TRUE, file = output)
   cat("  <subflow>\n", append = TRUE, file = output)
   cat(sprintf('   <graph version="0.3" width="%d" height="%d" locationtype="a" offsetx="100" offsety="50">\n', x, y), append = TRUE, file = output)
-  
+
   w$set("nodeID", w$get("nodeID") + 1L)
   In <- w$get("nodeID")
   edge <- In
   w$set("ypos", length(edge))
   TunnelNodeModel(type = "in", w = w)
-  
+
   w$set("level", w$get("level") + 1L)
   for (ee in as.list(e)) if (!missing(ee) && !CurlyBracket(deparseTreeExp(ee))) {
     edge <- c(edge, w$get("nodeID") + 1L)
@@ -421,13 +421,13 @@ SubflowNodeModel <- function (e, w) {
     walkCode(ee, w)
   }
   w$set("level", w$get("level") - 1L)
-  
+
   w$set("nodeID", w$get("nodeID") + 1L)
   Out <- w$get("nodeID")
   edge <- c(edge, Out)
   w$set("ypos", length(edge))
   TunnelNodeModel(type = "out", w = w)
-  
+
   PrintEdges(edge, file = output)
   cat("   </graph>\n", append = TRUE, file = output)
   cat("  </subflow>\n", append = TRUE, file = output)
@@ -436,11 +436,11 @@ SubflowNodeModel <- function (e, w) {
 }
 
 FreeNodeModel <- function (e, w) {
-  
+
   xpos <- 440L
   ypos <- w$get("ypos") * 80L
   output <- w$get("output")
-  
+
   cat(sprintf('<node id="%d" x="%d" y="%d">\n', w$get("nodeID"), xpos, ypos), append = TRUE, file = output)
   cat(sprintf(' <command>%s</command>\n', deparseTreeExp(e)), append = TRUE, file = output)
   cat(" <property/>\n", append = TRUE, file = output)
@@ -455,11 +455,11 @@ PrintEdges <- function(x, file) {
 }
 
 TunnelNodeModel <- function(type = "in", w) {
-  
+
   xpos <- 440L
   ypos <- w$get("ypos") * 80L
   output <- w$get("output")
-  
+
   cat(sprintf('<node id="%d" x="%d" y="%d">\n', w$get("nodeID"), xpos, ypos), append = TRUE, file = output)
   cat(' <command></command>\n', append = TRUE, file = output)
   cat(' <property/>\n', append = TRUE, file = output)
@@ -516,6 +516,7 @@ ReplaceChr <- function(text) {
   text <- gsub("<", "&lt;", text)
   text <- gsub(">", "&gt;", text)
   text <- gsub("\"", "&quot;", text)
+  text <- gsub("'", "&apos;", text)
   return(text)
 }
 
