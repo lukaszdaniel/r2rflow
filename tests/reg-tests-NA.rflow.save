@@ -708,9 +708,9 @@
     R2rflow(file = &quot;reg-tests.R&quot;, max.level = 0L, output = &quot;reg-tests-0.rflow&quot;)
     R2rflow(file = &quot;reg-tests.R&quot;, max.level = 1L, output = &quot;reg-tests-1.rflow&quot;)
     R2rflow(file = &quot;reg-tests.R&quot;, max.level = NA, output = &quot;reg-tests-NA.rflow&quot;)
-    stopifnot(tools::md5sum(&quot;reg-tests-0.rflow&quot;) == tools::md5sum(&quot;reg-tests-0.rflow.save&quot;))
-    stopifnot(tools::md5sum(&quot;reg-tests-1.rflow&quot;) == tools::md5sum(&quot;reg-tests-1.rflow.save&quot;))
-    stopifnot(tools::md5sum(&quot;reg-tests-NA.rflow&quot;) == tools::md5sum(&quot;reg-tests-NA.rflow.save&quot;))
+    stopifnot(identical(readLines(&quot;reg-tests-0.rflow&quot;), readLines(&quot;reg-tests-0.rflow.save&quot;)))
+    stopifnot(identical(readLines(&quot;reg-tests-1.rflow&quot;), readLines(&quot;reg-tests-1.rflow&quot;)))
+    stopifnot(identical(readLines(&quot;reg-tests-NA.rflow&quot;), readLines(&quot;reg-tests-NA.rflow&quot;)))
 }</command>
  <property/>
  <option type="com.ef_prime.rflow.node.base.IfNodeModel">
@@ -740,17 +740,17 @@
  <option type="com.ef_prime.rflow.node.base.FreeNodeModel"/>
 </node>
 <node id="87" x="440" y="400">
- <command>stopifnot(tools::md5sum(&quot;reg-tests-0.rflow&quot;) == tools::md5sum(&quot;reg-tests-0.rflow.save&quot;))</command>
+ <command>stopifnot(identical(readLines(&quot;reg-tests-0.rflow&quot;), readLines(&quot;reg-tests-0.rflow.save&quot;)))</command>
  <property/>
  <option type="com.ef_prime.rflow.node.base.FreeNodeModel"/>
 </node>
 <node id="88" x="440" y="480">
- <command>stopifnot(tools::md5sum(&quot;reg-tests-1.rflow&quot;) == tools::md5sum(&quot;reg-tests-1.rflow.save&quot;))</command>
+ <command>stopifnot(identical(readLines(&quot;reg-tests-1.rflow&quot;), readLines(&quot;reg-tests-1.rflow&quot;)))</command>
  <property/>
  <option type="com.ef_prime.rflow.node.base.FreeNodeModel"/>
 </node>
 <node id="89" x="440" y="560">
- <command>stopifnot(tools::md5sum(&quot;reg-tests-NA.rflow&quot;) == tools::md5sum(&quot;reg-tests-NA.rflow.save&quot;))</command>
+ <command>stopifnot(identical(readLines(&quot;reg-tests-NA.rflow&quot;), readLines(&quot;reg-tests-NA.rflow&quot;)))</command>
  <property/>
  <option type="com.ef_prime.rflow.node.base.FreeNodeModel"/>
 </node>
