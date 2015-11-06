@@ -8,11 +8,12 @@ NULL
 #' @param file A file containing R code.
 #' @param text A text containing R code.
 #' @param max.level Non-negative integer or NA value. Maximum level to which diagram may be expanded. NA means no limit.
+#' @param connect.top Specifies if top level elements should be connected.
 #' @param output An output rflow file. If a 'file' argument is specified, 'output' argument is
 #'               assumed to have the same file name as in 'file' but with rflow extension.
 #' @return xml formated R code
 #' @export
-R2rflow <- function (text = NULL, file = NULL, output = NULL, max.level = NA) {
+R2rflow <- function (text = NULL, file = NULL, output = NULL, max.level = NA, connect.top = FALSE) {
 
   if(!is.na(max.level) && (!is.integer(max.level) || (max.level < 0L)))
     stop("'max.level' argument must be non-negative integer or NA value", domain = "R-R2rflow")
@@ -65,7 +66,7 @@ R2rflow <- function (text = NULL, file = NULL, output = NULL, max.level = NA) {
     FreeNodeModel(codes, w)
   }
 
-  PrintEdges(edge, file = output)
+  if(connect.top) PrintEdges(edge, file = output)
   cat(' </graph>\n', append = TRUE, file = output)
   Task(output)
   cat('</rflow>\n', append = TRUE, file = output)
