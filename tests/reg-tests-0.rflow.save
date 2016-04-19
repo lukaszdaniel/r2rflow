@@ -7,7 +7,7 @@
 <!ENTITY quot "&#34;">
 ]>
 <rflow>
- <graph version="0.3" width="894" height="742" locationtype="a" offsetx="0" offsety="0">
+ <graph version="0.7" width="894" height="742" locationtype="a" offsetx="0" offsety="0">
   <setting>
    <entry key="OUTPUT_DIRECTORY"></entry>
    <entry key="SAVE_CACHE">false</entry>
@@ -26,7 +26,10 @@
    <entry key="IMAGE_SIZE">480,480</entry>
    <entry key="FONT_OTHER">sans-serif</entry>
   </setting>
-<node id="0" x="440" y="80">
+<properties>
+  <v key="packages"/>
+</properties>
+<node id="0" date="1461051516057" uid="03e636ca22810404c" x="440" y="80">
  <command>str &lt;- function(object, ...) UseMethod(&quot;str&quot;)
 a &lt;- 1:10
 if (length(a)) {
@@ -78,14 +81,6 @@ testfun &lt;- function(x = 1) {
     if (x &gt; 3) 
         return(&quot;x is greater than 3&quot;)
     &quot;x is not greater than 3&quot;
-}
-if (require(&quot;R2rflow&quot;)) {
-    R2rflow(file = &quot;reg-tests.R&quot;, max.level = 0, output = &quot;reg-tests-0.rflow&quot;)
-    R2rflow(file = &quot;reg-tests.R&quot;, max.level = 1, output = &quot;reg-tests-1.rflow&quot;)
-    R2rflow(file = &quot;reg-tests.R&quot;, max.level = NA, output = &quot;reg-tests-NA.rflow&quot;)
-    stopifnot(identical(readLines(&quot;reg-tests-0.rflow&quot;), readLines(&quot;reg-tests-0.rflow.save&quot;)))
-    stopifnot(identical(readLines(&quot;reg-tests-1.rflow&quot;), readLines(&quot;reg-tests-1.rflow&quot;)))
-    stopifnot(identical(readLines(&quot;reg-tests-NA.rflow&quot;), readLines(&quot;reg-tests-NA.rflow&quot;)))
 }</command>
  <property/>
  <option type="com.ef_prime.rflow.node.base.FreeNodeModel"/>

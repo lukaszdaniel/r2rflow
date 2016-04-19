@@ -16,6 +16,7 @@ NULL
 R2rflow <- function (text = NULL, file = NULL, output = NULL, max.level = NA, connect.top = FALSE) {
 
   if(!is.na(max.level) && (!is.integer(max.level) || (max.level < 0L)))
+    
     stop("'max.level' argument must be non-negative integer or NA value", domain = "R-R2rflow")
 
   if (missing(text) && (missing(file) || nchar(file) == 0L)) {
@@ -49,7 +50,7 @@ R2rflow <- function (text = NULL, file = NULL, output = NULL, max.level = NA, co
 
   Preambule(output)
   cat('<rflow>\n', append = TRUE, file = output)
-  cat(' <graph version="0.3" width="894" height="742" locationtype="a" offsetx="0" offsety="0">\n', append = TRUE, file = output)
+  cat(' <graph version="0.7" width="894" height="742" locationtype="a" offsetx="0" offsety="0">\n', append = TRUE, file = output)
   Settings(output)
 
   if(is.na(max.level) || (max.level > 0L)) {
@@ -117,14 +118,14 @@ FunctionNodeModel <- function (e, w) {
   y <- 700L
   output <- w$get("output")
 
-  cat(sprintf('<node id="%d" x="%d" y="%d">\n', w$get("nodeID"), xpos, ypos), append = TRUE, file = output)
+  cat(sprintf('<node id="%d" date="%s" uid="%s" x="%d" y="%d">\n', w$get("nodeID"), crdate(), uid(), xpos, ypos), append = TRUE, file = output)
   cat(sprintf(' <command>%s</command>\n', deparseTreeExp(e)), append = TRUE, file = output)
   cat(" <property/>\n", append = TRUE, file = output)
   cat(' <option type="com.ef_prime.rflow.node.base.FunctionNodeModel">\n', append = TRUE, file = output)
   cat(sprintf('  <entry key="function">%s</entry>\n', deparseTreeExp(e[[2]])), append = TRUE, file = output)
   cat(sprintf('  <entry key="args">(%s)</entry>\n', gsub("= (,|$)", "\\1", gsub("^(pair)?list\\(|\\)$|^NULL$", "", deparseTreeExp(e[[3]][[2]])))), append = TRUE, file = output)
   cat("  <subflow>\n", append = TRUE, file = output)
-  cat(sprintf('   <graph version="0.3" width="%d" height="%d" locationtype="a" offsetx="0" offsety="0">\n', x, y), append = TRUE, file = output)
+  cat(sprintf('   <graph version="0.7" width="%d" height="%d" locationtype="a" offsetx="0" offsety="0">\n', x, y), append = TRUE, file = output)
 
 
   w$set("nodeID", w$get("nodeID") + 1L)
@@ -169,14 +170,14 @@ IfNodeModel <- function (e, w) {
   y <- 700L
   output <- w$get("output")
 
-  cat(sprintf('<node id="%d" x="%d" y="%d">\n', w$get("nodeID"), xpos, ypos), append = TRUE, file = output)
+  cat(sprintf('<node id="%d" date="%s" uid="%s" x="%d" y="%d">\n', w$get("nodeID"), crdate(), uid(), xpos, ypos), append = TRUE, file = output)
   cat(sprintf(' <command>%s</command>\n', deparseTreeExp(e)), append = TRUE, file = output)
   cat(' <property/>\n', append = TRUE, file = output)
   cat(' <option type="com.ef_prime.rflow.node.base.IfNodeModel">\n', append = TRUE, file = output)
   cat(sprintf('  <entry key="condition">%s</entry>\n', deparseTreeExp(e[[2]])), append = TRUE, file = output)
 
   cat('<subflow>\n', append = TRUE, file = output)
-  cat(sprintf(' <graph version="0.3" width="%d" height="%d" locationtype="a" offsetx="0" offsety="0">\n', x, y), append = TRUE, file = output)
+  cat(sprintf(' <graph version="0.7" width="%d" height="%d" locationtype="a" offsetx="0" offsety="0">\n', x, y), append = TRUE, file = output)
 
   w$set("nodeID", w$get("nodeID") + 1L)
   In <- w$get("nodeID")
@@ -209,7 +210,7 @@ IfNodeModel <- function (e, w) {
   cat('</subflow>\n', append = TRUE, file = output)
 
   cat('<subflow>\n', append = TRUE, file = output)
-  cat(sprintf(' <graph version="0.3" width="%d" height="%d" locationtype="a" offsetx="0" offsety="0">\n', x, y), append = TRUE, file = output)
+  cat(sprintf(' <graph version="0.7" width="%d" height="%d" locationtype="a" offsetx="0" offsety="0">\n', x, y), append = TRUE, file = output)
 
   w$set("nodeID", w$get("nodeID") + 1L)
   In <- w$get("nodeID")
@@ -254,14 +255,14 @@ ForNodeModel <- function (e, w) {
   x <- 688L
   y <- 700L
   output <- w$get("output")
-  cat(sprintf('<node id="%d" x="%d" y="%d">\n', w$get("nodeID"), xpos, ypos), append = TRUE, file = output)
+  cat(sprintf('<node id="%d" date="%s" uid="%s" x="%d" y="%d">\n', w$get("nodeID"), crdate(), uid(), xpos, ypos), append = TRUE, file = output)
   cat(sprintf(' <command>%s</command>\n', deparseTreeExp(e)), append = TRUE, file = output)
   cat(" <property/>\n", append = TRUE, file = output)
   cat(' <option type="com.ef_prime.rflow.node.base.LoopNodeModel">\n', append = TRUE, file = output)
   cat('  <entry key="loop">for</entry>\n', append = TRUE, file = output)
   cat(sprintf('  <entry key="condition">%s</entry>\n', paste(deparseTreeExp(e[[2]]), " in ", deparseTreeExp(e[[3]]), sep = "", collase = "")), append = TRUE, file = output)
   cat("  <subflow>\n", append = TRUE, file = output)
-  cat(sprintf('   <graph version="0.3" width="%d" height="%d" locationtype="a" offsetx="0" offsety="0">\n', x, y), append = TRUE, file = output)
+  cat(sprintf('   <graph version="0.7" width="%d" height="%d" locationtype="a" offsetx="0" offsety="0">\n', x, y), append = TRUE, file = output)
 
 
   w$set("nodeID", w$get("nodeID") + 1L)
@@ -304,14 +305,14 @@ WhileNodeModel <- function (e, w) {
   x <- 688L
   y <- 700L
   output <- w$get("output")
-  cat(sprintf('<node id="%d" x="%d" y="%d">\n', w$get("nodeID"), xpos, ypos), append = TRUE, file = output)
+  cat(sprintf('<node id="%d" date="%s" uid="%s" x="%d" y="%d">\n', w$get("nodeID"), crdate(), uid(), xpos, ypos), append = TRUE, file = output)
   cat(sprintf(' <command>%s</command>\n', deparseTreeExp(e)), append = TRUE, file = output)
   cat(" <property/>\n", append = TRUE, file = output)
   cat(' <option type="com.ef_prime.rflow.node.base.LoopNodeModel">\n', append = TRUE, file = output)
   cat('  <entry key="loop">while</entry>\n', append = TRUE, file = output)
   cat(sprintf('  <entry key="condition">%s</entry>\n', deparseTreeExp(e[[2]])), append = TRUE, file = output)
   cat("  <subflow>\n", append = TRUE, file = output)
-  cat(sprintf('   <graph version="0.3" width="%d" height="%d" locationtype="a" offsetx="0" offsety="0">\n', x, y), append = TRUE, file = output)
+  cat(sprintf('   <graph version="0.7" width="%d" height="%d" locationtype="a" offsetx="0" offsety="0">\n', x, y), append = TRUE, file = output)
 
 
   w$set("nodeID", w$get("nodeID") + 1L)
@@ -354,13 +355,13 @@ RepeatNodeModel <- function (e, w) {
   x <- 688L
   y <- 700L
   output <- w$get("output")
-  cat(sprintf('<node id="%d" x="%d" y="%d">\n', w$get("nodeID"), xpos, ypos), append = TRUE, file = output)
+  cat(sprintf('<node id="%d" date="%s" uid="%s" x="%d" y="%d">\n', w$get("nodeID"), crdate(), uid(), xpos, ypos), append = TRUE, file = output)
   cat(sprintf(' <command>%s</command>\n', deparseTreeExp(e)), append = TRUE, file = output)
   cat(" <property/>\n", append = TRUE, file = output)
   cat(' <option type="com.ef_prime.rflow.node.base.LoopNodeModel">\n', append = TRUE, file = output)
   cat('  <entry key="loop">repeat</entry>\n', append = TRUE, file = output)
   cat("  <subflow>\n", append = TRUE, file = output)
-  cat(sprintf('   <graph version="0.3" width="%d" height="%d" locationtype="a" offsetx="0" offsety="0">\n', x, y), append = TRUE, file = output)
+  cat(sprintf('   <graph version="0.7" width="%d" height="%d" locationtype="a" offsetx="0" offsety="0">\n', x, y), append = TRUE, file = output)
 
   w$set("nodeID", w$get("nodeID") + 1L)
   In <- w$get("nodeID")
@@ -402,12 +403,12 @@ SubflowNodeModel <- function (e, w) {
   x <- 688L
   y <- 700L
   output <- w$get("output")
-  cat(sprintf('<node id="%d" x="%d" y="%d">\n', w$get("nodeID"), xpos, ypos), append = TRUE, file = output)
+  cat(sprintf('<node id="%d" date="%s" uid="%s" x="%d" y="%d">\n', w$get("nodeID"), crdate(), uid(), xpos, ypos), append = TRUE, file = output)
   cat(sprintf(' <command>%s</command>\n', deparseTreeExp(e)), append = TRUE, file = output)
   cat(" <property/>\n", append = TRUE, file = output)
   cat(' <option type="com.ef_prime.rflow.node.base.SubflowNodeModel">\n', append = TRUE, file = output)
   cat("  <subflow>\n", append = TRUE, file = output)
-  cat(sprintf('   <graph version="0.3" width="%d" height="%d" locationtype="a" offsetx="100" offsety="50">\n', x, y), append = TRUE, file = output)
+  cat(sprintf('   <graph version="0.7" width="%d" height="%d" locationtype="a" offsetx="100" offsety="50">\n', x, y), append = TRUE, file = output)
 
   w$set("nodeID", w$get("nodeID") + 1L)
   In <- w$get("nodeID")
@@ -442,7 +443,7 @@ FreeNodeModel <- function (e, w) {
   ypos <- w$get("ypos") * 80L
   output <- w$get("output")
 
-  cat(sprintf('<node id="%d" x="%d" y="%d">\n', w$get("nodeID"), xpos, ypos), append = TRUE, file = output)
+  cat(sprintf('<node id="%d" date="%s" uid="%s" x="%d" y="%d">\n', w$get("nodeID"), crdate(), uid(), xpos, ypos), append = TRUE, file = output)
   cat(sprintf(' <command>%s</command>\n', deparseTreeExp(e)), append = TRUE, file = output)
   cat(" <property/>\n", append = TRUE, file = output)
   cat(' <option type="com.ef_prime.rflow.node.base.FreeNodeModel"/>\n', append = TRUE, file = output)
@@ -461,7 +462,7 @@ TunnelNodeModel <- function(type = "in", w) {
   ypos <- w$get("ypos") * 80L
   output <- w$get("output")
 
-  cat(sprintf('<node id="%d" x="%d" y="%d">\n', w$get("nodeID"), xpos, ypos), append = TRUE, file = output)
+  cat(sprintf('<node id="%d" date="%s" uid="%s" x="%d" y="%d">\n', w$get("nodeID"), crdate(), uid(), xpos, ypos), append = TRUE, file = output)
   cat(' <command></command>\n', append = TRUE, file = output)
   cat(' <property/>\n', append = TRUE, file = output)
   cat(' <option type="com.ef_prime.rflow.node.base.TunnelNodeModel">\n', append = TRUE, file = output)
@@ -500,6 +501,9 @@ Settings <- function(output) {
   cat('   <entry key="IMAGE_SIZE">480,480</entry>\n', append = TRUE, file = output)
   cat('   <entry key="FONT_OTHER">sans-serif</entry>\n', append = TRUE, file = output)
   cat('  </setting>\n', append = TRUE, file = output)
+  cat('<properties>\n', append = TRUE, file = output)
+  cat('  <v key="packages"/>\n', append = TRUE, file = output)
+  cat('</properties>\n', append = TRUE, file = output)
 }
 
 Task <- function(output) {
@@ -524,4 +528,12 @@ ReplaceChr <- function(text) {
 CurlyBracket <- function(x) {
   if(length(x) > 1L) return(FALSE)
   grepl(pattern = "^`?\\{`?$", x = x)
+}
+
+uid <- function() {
+  return(paste(sample(c(0:9, letters[1:6]), size = 17, replace = TRUE), collapse =""))
+}
+
+crdate <- function() {
+  return(as.character(floor(1000*as.numeric(Sys.time()))))
 }

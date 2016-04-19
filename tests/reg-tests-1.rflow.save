@@ -7,7 +7,7 @@
 <!ENTITY quot "&#34;">
 ]>
 <rflow>
- <graph version="0.3" width="894" height="742" locationtype="a" offsetx="0" offsety="0">
+ <graph version="0.7" width="894" height="742" locationtype="a" offsetx="0" offsety="0">
   <setting>
    <entry key="OUTPUT_DIRECTORY"></entry>
    <entry key="SAVE_CACHE">false</entry>
@@ -26,17 +26,20 @@
    <entry key="IMAGE_SIZE">480,480</entry>
    <entry key="FONT_OTHER">sans-serif</entry>
   </setting>
-<node id="1" x="440" y="80">
+<properties>
+  <v key="packages"/>
+</properties>
+<node id="1" date="1461051523329" uid="28f96dfaf89f4f42b" x="440" y="80">
  <command>str &lt;- function(object, ...) UseMethod(&quot;str&quot;)</command>
  <property/>
  <option type="com.ef_prime.rflow.node.base.FreeNodeModel"/>
 </node>
-<node id="2" x="440" y="160">
+<node id="2" date="1461051523346" uid="1cf5a11122502d1a6" x="440" y="160">
  <command>a &lt;- 1:10</command>
  <property/>
  <option type="com.ef_prime.rflow.node.base.FreeNodeModel"/>
 </node>
-<node id="3" x="440" y="240">
+<node id="3" date="1461051523361" uid="0003fbddf1182b26d" x="440" y="240">
  <command>if (length(a)) {
     b &lt;- sum(a)
     if (b &gt; 100 &amp;&amp; b &lt; 10000) 
@@ -47,12 +50,12 @@
  <property/>
  <option type="com.ef_prime.rflow.node.base.FreeNodeModel"/>
 </node>
-<node id="4" x="440" y="320">
+<node id="4" date="1461051523377" uid="c2a6c9ea3ff1834ed" x="440" y="320">
  <command>`%w/o%` &lt;- function(x, y) x[is.na(match(x, y))]</command>
  <property/>
  <option type="com.ef_prime.rflow.node.base.FreeNodeModel"/>
 </node>
-<node id="5" x="440" y="400">
+<node id="5" date="1461051523394" uid="cefa942076bb14a89" x="440" y="400">
  <command>for (i in seq_len(10)) {
     cat(i, &quot;\n&quot;, sep = &quot;&quot;)
     e &lt;- if (i == 3L) {
@@ -63,12 +66,12 @@
  <property/>
  <option type="com.ef_prime.rflow.node.base.FreeNodeModel"/>
 </node>
-<node id="6" x="440" y="480">
+<node id="6" date="1461051523413" uid="7a72c8a6ed06621b1" x="440" y="480">
  <command>a &lt;- 1</command>
  <property/>
  <option type="com.ef_prime.rflow.node.base.FreeNodeModel"/>
 </node>
-<node id="7" x="440" y="560">
+<node id="7" date="1461051523429" uid="c958317176c44c605" x="440" y="560">
  <command>while (a &lt; 10) {
     cat(&quot;Hello\n&quot;)
     a &lt;- a + 1
@@ -76,7 +79,7 @@
  <property/>
  <option type="com.ef_prime.rflow.node.base.FreeNodeModel"/>
 </node>
-<node id="8" x="440" y="640">
+<node id="8" date="1461051523445" uid="158982afe978849b3" x="440" y="640">
  <command>repeat {
     p &lt;- 1
     i &lt;- 1
@@ -90,22 +93,22 @@
  <property/>
  <option type="com.ef_prime.rflow.node.base.FreeNodeModel"/>
 </node>
-<node id="9" x="440" y="720">
+<node id="9" date="1461051523462" uid="0e8048bc472406f29" x="440" y="720">
  <command>p &lt;- 1</command>
  <property/>
  <option type="com.ef_prime.rflow.node.base.FreeNodeModel"/>
 </node>
-<node id="10" x="440" y="800">
+<node id="10" date="1461051523477" uid="96415e0f828ffcf53" x="440" y="800">
  <command>error = -0.2 * log((1/runif(60, 0, 1)) - 1)</command>
  <property/>
  <option type="com.ef_prime.rflow.node.base.FreeNodeModel"/>
 </node>
-<node id="11" x="440" y="880">
+<node id="11" date="1461051523495" uid="dcddd03c44f18e831" x="440" y="880">
  <command>z = (p &lt; 0.5 + error)</command>
  <property/>
  <option type="com.ef_prime.rflow.node.base.FreeNodeModel"/>
 </node>
-<node id="12" x="440" y="960">
+<node id="12" date="1461051523520" uid="a4887510c32e79dad" x="440" y="960">
  <command>{
     {
         y &lt;- sqrt(3)
@@ -117,31 +120,19 @@
  <property/>
  <option type="com.ef_prime.rflow.node.base.FreeNodeModel"/>
 </node>
-<node id="13" x="440" y="1040">
+<node id="13" date="1461051523693" uid="b44d0e282e645ca2c" x="440" y="1040">
  <command>get_formals_from_method_definition &lt;- function(m) {
     methods::unRematchDefinition(m)
 }</command>
  <property/>
  <option type="com.ef_prime.rflow.node.base.FreeNodeModel"/>
 </node>
-<node id="14" x="440" y="1120">
+<node id="14" date="1461051523712" uid="e17c8305dceada519" x="440" y="1120">
  <command>testfun &lt;- function(x = 1L) {
     x &lt;- x + 1L
     if (x &gt; 3L) 
         return(&quot;x is greater than 3&quot;)
     &quot;x is not greater than 3&quot;
-}</command>
- <property/>
- <option type="com.ef_prime.rflow.node.base.FreeNodeModel"/>
-</node>
-<node id="15" x="440" y="1200">
- <command>if (require(&quot;R2rflow&quot;)) {
-    R2rflow(file = &quot;reg-tests.R&quot;, max.level = 0L, output = &quot;reg-tests-0.rflow&quot;)
-    R2rflow(file = &quot;reg-tests.R&quot;, max.level = 1L, output = &quot;reg-tests-1.rflow&quot;)
-    R2rflow(file = &quot;reg-tests.R&quot;, max.level = NA, output = &quot;reg-tests-NA.rflow&quot;)
-    stopifnot(identical(readLines(&quot;reg-tests-0.rflow&quot;), readLines(&quot;reg-tests-0.rflow.save&quot;)))
-    stopifnot(identical(readLines(&quot;reg-tests-1.rflow&quot;), readLines(&quot;reg-tests-1.rflow&quot;)))
-    stopifnot(identical(readLines(&quot;reg-tests-NA.rflow&quot;), readLines(&quot;reg-tests-NA.rflow&quot;)))
 }</command>
  <property/>
  <option type="com.ef_prime.rflow.node.base.FreeNodeModel"/>
@@ -159,7 +150,6 @@
 <edge from="11" to="12"/>
 <edge from="12" to="13"/>
 <edge from="13" to="14"/>
-<edge from="14" to="15"/>
  </graph>
  <task>
   <taskgroup>
