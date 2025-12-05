@@ -7,29 +7,16 @@
 <!ENTITY quot "&#34;">
 ]>
 <rflow>
- <graph version="0.7" width="894" height="742" locationtype="a" offsetx="0" offsety="0">
+ <graph version="0.9" width="894" height="742" locationtype="a" offsetx="0" offsety="0">
   <setting>
-   <entry key="OUTPUT_DIRECTORY"></entry>
-   <entry key="SAVE_CACHE">false</entry>
-   <entry key="FONT_SCREEN">monospace</entry>
-   <entry key="TEXT_ENCODING">UTF-8</entry>
-   <entry key="LOAD_CACHE">false</entry>
-   <entry key="IGNORE_ERROR">false</entry>
-   <entry key="SAVE_WORKSPACE"></entry>
-   <entry key="OUTPUT_REPORT">true</entry>
-   <entry key="RUN_TYPE">2</entry>
-   <entry key="OUTPUT_ITEMS">script</entry>
    <entry key="USE_GRID">true</entry>
-   <entry key="REPORT_TYPES">pdf,html</entry>
    <entry key="FOLDER">empty</entry>
    <entry key="GRID_DISTANCE2">10</entry>
-   <entry key="IMAGE_SIZE">480,480</entry>
-   <entry key="FONT_OTHER">sans-serif</entry>
   </setting>
 <properties>
   <v key="packages"/>
 </properties>
-<node id="0" date="1461051516057" uid="03e636ca22810404c" x="440" y="80">
+<node id="0" date="1764962143740" uid="3d3eb6de57f5e6239" x="440" y="80">
  <command>str &lt;- function(object, ...) UseMethod(&quot;str&quot;)
 a &lt;- 1:10
 if (length(a)) {
@@ -82,15 +69,14 @@ testfun &lt;- function(x = 1) {
         return(&quot;x is greater than 3&quot;)
     &quot;x is not greater than 3&quot;
 }</command>
+ <packages/>
  <property/>
  <option type="com.ef_prime.rflow.node.base.FreeNodeModel"/>
 </node>
  </graph>
  <task>
   <taskgroup>
-   <taskproperty>
-    <entry key="title">Task</entry>
-   </taskproperty>
+   <taskproperty/>
   </taskgroup>
  </task>
 </rflow>

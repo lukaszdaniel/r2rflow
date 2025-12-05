@@ -7,39 +7,28 @@
 <!ENTITY quot "&#34;">
 ]>
 <rflow>
- <graph version="0.7" width="894" height="742" locationtype="a" offsetx="0" offsety="0">
+ <graph version="0.9" width="894" height="742" locationtype="a" offsetx="0" offsety="0">
   <setting>
-   <entry key="OUTPUT_DIRECTORY"></entry>
-   <entry key="SAVE_CACHE">false</entry>
-   <entry key="FONT_SCREEN">monospace</entry>
-   <entry key="TEXT_ENCODING">UTF-8</entry>
-   <entry key="LOAD_CACHE">false</entry>
-   <entry key="IGNORE_ERROR">false</entry>
-   <entry key="SAVE_WORKSPACE"></entry>
-   <entry key="OUTPUT_REPORT">true</entry>
-   <entry key="RUN_TYPE">2</entry>
-   <entry key="OUTPUT_ITEMS">script</entry>
    <entry key="USE_GRID">true</entry>
-   <entry key="REPORT_TYPES">pdf,html</entry>
    <entry key="FOLDER">empty</entry>
    <entry key="GRID_DISTANCE2">10</entry>
-   <entry key="IMAGE_SIZE">480,480</entry>
-   <entry key="FONT_OTHER">sans-serif</entry>
   </setting>
 <properties>
   <v key="packages"/>
 </properties>
-<node id="1" date="1461051523329" uid="28f96dfaf89f4f42b" x="440" y="80">
+<node id="1" date="1764962137579" uid="845ab96728c14f93c" x="440" y="80">
  <command>str &lt;- function(object, ...) UseMethod(&quot;str&quot;)</command>
+ <packages/>
  <property/>
  <option type="com.ef_prime.rflow.node.base.FreeNodeModel"/>
 </node>
-<node id="2" date="1461051523346" uid="1cf5a11122502d1a6" x="440" y="160">
+<node id="2" date="1764962137580" uid="344f1d308ebfa1372" x="440" y="160">
  <command>a &lt;- 1:10</command>
+ <packages/>
  <property/>
  <option type="com.ef_prime.rflow.node.base.FreeNodeModel"/>
 </node>
-<node id="3" date="1461051523361" uid="0003fbddf1182b26d" x="440" y="240">
+<node id="3" date="1764962137580" uid="fd1a02b088e922279" x="440" y="240">
  <command>if (length(a)) {
     b &lt;- sum(a)
     if (b &gt; 100 &amp;&amp; b &lt; 10000) 
@@ -47,15 +36,17 @@
     else if (b &lt; 500) 
         c &lt;- log(b)
 }</command>
+ <packages/>
  <property/>
  <option type="com.ef_prime.rflow.node.base.FreeNodeModel"/>
 </node>
-<node id="4" date="1461051523377" uid="c2a6c9ea3ff1834ed" x="440" y="320">
+<node id="4" date="1764962137581" uid="e803649d0098f32dd" x="440" y="320">
  <command>`%w/o%` &lt;- function(x, y) x[is.na(match(x, y))]</command>
+ <packages/>
  <property/>
  <option type="com.ef_prime.rflow.node.base.FreeNodeModel"/>
 </node>
-<node id="5" date="1461051523394" uid="cefa942076bb14a89" x="440" y="400">
+<node id="5" date="1764962137581" uid="7b762a4241519395a" x="440" y="400">
  <command>for (i in seq_len(10)) {
     cat(i, &quot;\n&quot;, sep = &quot;&quot;)
     e &lt;- if (i == 3L) {
@@ -63,23 +54,26 @@
     }
     cat(i^2, &quot;\n&quot;, sep = &quot;&quot;)
 }</command>
+ <packages/>
  <property/>
  <option type="com.ef_prime.rflow.node.base.FreeNodeModel"/>
 </node>
-<node id="6" date="1461051523413" uid="7a72c8a6ed06621b1" x="440" y="480">
+<node id="6" date="1764962137582" uid="1f194a00df52b0241" x="440" y="480">
  <command>a &lt;- 1</command>
+ <packages/>
  <property/>
  <option type="com.ef_prime.rflow.node.base.FreeNodeModel"/>
 </node>
-<node id="7" date="1461051523429" uid="c958317176c44c605" x="440" y="560">
+<node id="7" date="1764962137582" uid="a24a6b2da10c86f5a" x="440" y="560">
  <command>while (a &lt; 10) {
     cat(&quot;Hello\n&quot;)
     a &lt;- a + 1
 }</command>
+ <packages/>
  <property/>
  <option type="com.ef_prime.rflow.node.base.FreeNodeModel"/>
 </node>
-<node id="8" date="1461051523445" uid="158982afe978849b3" x="440" y="640">
+<node id="8" date="1764962137582" uid="d3a17c1d9c2e69479" x="440" y="640">
  <command>repeat {
     p &lt;- 1
     i &lt;- 1
@@ -90,25 +84,29 @@
         break
     }
 }</command>
+ <packages/>
  <property/>
  <option type="com.ef_prime.rflow.node.base.FreeNodeModel"/>
 </node>
-<node id="9" date="1461051523462" uid="0e8048bc472406f29" x="440" y="720">
+<node id="9" date="1764962137583" uid="735c7990fb456fb86" x="440" y="720">
  <command>p &lt;- 1</command>
+ <packages/>
  <property/>
  <option type="com.ef_prime.rflow.node.base.FreeNodeModel"/>
 </node>
-<node id="10" date="1461051523477" uid="96415e0f828ffcf53" x="440" y="800">
+<node id="10" date="1764962137583" uid="e0c9b2bbc13f91842" x="440" y="800">
  <command>error = -0.2 * log((1/runif(60, 0, 1)) - 1)</command>
+ <packages/>
  <property/>
  <option type="com.ef_prime.rflow.node.base.FreeNodeModel"/>
 </node>
-<node id="11" date="1461051523495" uid="dcddd03c44f18e831" x="440" y="880">
+<node id="11" date="1764962137583" uid="1adb0355a9695bc7d" x="440" y="880">
  <command>z = (p &lt; 0.5 + error)</command>
+ <packages/>
  <property/>
  <option type="com.ef_prime.rflow.node.base.FreeNodeModel"/>
 </node>
-<node id="12" date="1461051523520" uid="a4887510c32e79dad" x="440" y="960">
+<node id="12" date="1764962137583" uid="0471126d14243f0b4" x="440" y="960">
  <command>{
     {
         y &lt;- sqrt(3)
@@ -117,23 +115,26 @@
     mean(x)
     sd(x)
 }</command>
+ <packages/>
  <property/>
  <option type="com.ef_prime.rflow.node.base.FreeNodeModel"/>
 </node>
-<node id="13" date="1461051523693" uid="b44d0e282e645ca2c" x="440" y="1040">
+<node id="13" date="1764962137584" uid="2ed9da888d92aaff9" x="440" y="1040">
  <command>get_formals_from_method_definition &lt;- function(m) {
     methods::unRematchDefinition(m)
 }</command>
+ <packages/>
  <property/>
  <option type="com.ef_prime.rflow.node.base.FreeNodeModel"/>
 </node>
-<node id="14" date="1461051523712" uid="e17c8305dceada519" x="440" y="1120">
+<node id="14" date="1764962137584" uid="70917f1fe0256ca16" x="440" y="1120">
  <command>testfun &lt;- function(x = 1L) {
     x &lt;- x + 1L
     if (x &gt; 3L) 
         return(&quot;x is greater than 3&quot;)
     &quot;x is not greater than 3&quot;
 }</command>
+ <packages/>
  <property/>
  <option type="com.ef_prime.rflow.node.base.FreeNodeModel"/>
 </node>
@@ -153,9 +154,7 @@
  </graph>
  <task>
   <taskgroup>
-   <taskproperty>
-    <entry key="title">Task</entry>
-   </taskproperty>
+   <taskproperty/>
   </taskgroup>
  </task>
 </rflow>

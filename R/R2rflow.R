@@ -34,8 +34,8 @@ R2rflow <- function(text = NULL, file = NULL, output = NULL, max.level = NA, con
   codes <- parse(text = text, file = file)
   env <- new.env()
 
-  functionSet <- function(v, e) assign(v, e, envir = env)
-  functionGet <- function(v, e) get(v, envir = env)
+  functionSet <- function(var, value) assign(var, value, envir = env)
+  functionGet <- function(var, value) get(var, envir = env)
 
   w <- makeCodeWalker(call = functionCall, leaf = functionLeaf,
                       set = functionSet, get = functionGet)
@@ -49,7 +49,7 @@ R2rflow <- function(text = NULL, file = NULL, output = NULL, max.level = NA, con
 
   Preamble(output)
   cat('<rflow>\n', append = TRUE, file = output)
-  cat(' <graph version="0.7" width="894" height="742" locationtype="a" offsetx="0" offsety="0">\n', append = TRUE, file = output)
+  cat(' <graph version="0.9" width="894" height="742" locationtype="a" offsetx="0" offsety="0">\n', append = TRUE, file = output)
   Settings(output)
 
   # Walk code
@@ -123,7 +123,7 @@ process_subflow <- function(w, body_exprs, output) {
   y <- 700L
   cat("  <subflow>\n", append = TRUE, file = output)
   # SubflowNodeModel has custom offsetx="100" offsety="50". For now put 0,0.
-  cat(sprintf('   <graph version="0.7" width="%d" height="%d" locationtype="a" offsetx="0" offsety="0">\n', x, y), append = TRUE, file = output)
+  cat(sprintf('   <graph version="0.9" width="%d" height="%d" locationtype="a" offsetx="0" offsety="0">\n', x, y), append = TRUE, file = output)
 
   # Tunnel IN
   w$set("nodeID", w$get("nodeID") + 1L)
@@ -165,10 +165,16 @@ FunctionNodeModel <- function(e, w) {
 
   cat(sprintf('<node id="%d" date="%s" uid="%s" x="%d" y="%d">\n', w$get("nodeID"), crdate(), uid(), xpos, ypos), append = TRUE, file = output)
   cat(sprintf(' <command>%s</command>\n', deparseTreeExp(e)), append = TRUE, file = output)
+  cat(" <packages/>\n", append = TRUE, file = output)
   cat(" <property/>\n", append = TRUE, file = output)
   cat(' <option type="com.ef_prime.rflow.node.base.FunctionNodeModel">\n', append = TRUE, file = output)
   cat(sprintf('  <entry key="function">%s</entry>\n', deparseTreeExp(e[[2]])), append = TRUE, file = output)
-  cat(sprintf('  <entry key="args">(%s)</entry>\n', extract_args2(deparseTreeExp(e[[3]][[2]]))), append = TRUE, file = output)
+  args <- extract_args2(deparseTreeExp(e[[3]][[2]]))
+  cat(sprintf('  <entry key="args">(%s)</entry>\n', args), append = TRUE, file = output)
+  cat("  <entryset>\n", append = TRUE, file = output)
+  cat(sprintf('    <v key="name">%s</v>\n', deparseTreeExp(e[[2]])), append = TRUE, file = output)
+  cat(args_to_xml(args), append = TRUE, file = output)
+  cat("\n  </entryset>\n", append = TRUE, file = output)
 
   body_exprs <- extract_body_list(e[[3]][[3]])
   process_subflow(w, body_exprs, output)
@@ -185,6 +191,7 @@ IfNodeModel <- function(e, w) {
 
   cat(sprintf('<node id="%d" date="%s" uid="%s" x="%d" y="%d">\n', w$get("nodeID"), crdate(), uid(), xpos, ypos), append = TRUE, file = output)
   cat(sprintf(' <command>%s</command>\n', deparseTreeExp(e)), append = TRUE, file = output)
+  cat(" <packages/>\n", append = TRUE, file = output)
   cat(' <property/>\n', append = TRUE, file = output)
   cat(' <option type="com.ef_prime.rflow.node.base.IfNodeModel">\n', append = TRUE, file = output)
   cat(sprintf('  <entry key="condition">%s</entry>\n', deparseTreeExp(e[[2]])), append = TRUE, file = output)
@@ -212,10 +219,15 @@ ForNodeModel <- function(e, w) {
   output <- w$get("output")
   cat(sprintf('<node id="%d" date="%s" uid="%s" x="%d" y="%d">\n', w$get("nodeID"), crdate(), uid(), xpos, ypos), append = TRUE, file = output)
   cat(sprintf(' <command>%s</command>\n', deparseTreeExp(e)), append = TRUE, file = output)
+  cat(" <packages/>\n", append = TRUE, file = output)
   cat(" <property/>\n", append = TRUE, file = output)
   cat(' <option type="com.ef_prime.rflow.node.base.LoopNodeModel">\n', append = TRUE, file = output)
   cat('  <entry key="loop">for</entry>\n', append = TRUE, file = output)
   cat(sprintf('  <entry key="condition">%s</entry>\n', paste(deparseTreeExp(e[[2]]), " in ", deparseTreeExp(e[[3]]), sep = "", collase = "")), append = TRUE, file = output)
+  cat("  <entryset>\n", append = TRUE, file = output)
+  cat(sprintf('    <v key="var">%s</v>\n', deparseTreeExp(e[[2]])), append = TRUE, file = output)
+  cat(sprintf('    <v key="range">%s</v>\n', deparseTreeExp(e[[3]])), append = TRUE, file = output)
+  cat("  </entryset>\n", append = TRUE, file = output)
 
   body_exprs <- extract_body_list(e[[4]])
   process_subflow(w, body_exprs, output)
@@ -231,6 +243,7 @@ WhileNodeModel <- function(e, w) {
   output <- w$get("output")
   cat(sprintf('<node id="%d" date="%s" uid="%s" x="%d" y="%d">\n', w$get("nodeID"), crdate(), uid(), xpos, ypos), append = TRUE, file = output)
   cat(sprintf(' <command>%s</command>\n', deparseTreeExp(e)), append = TRUE, file = output)
+  cat(" <packages/>\n", append = TRUE, file = output)
   cat(" <property/>\n", append = TRUE, file = output)
   cat(' <option type="com.ef_prime.rflow.node.base.LoopNodeModel">\n', append = TRUE, file = output)
   cat('  <entry key="loop">while</entry>\n', append = TRUE, file = output)
@@ -250,6 +263,7 @@ RepeatNodeModel <- function(e, w) {
   output <- w$get("output")
   cat(sprintf('<node id="%d" date="%s" uid="%s" x="%d" y="%d">\n', w$get("nodeID"), crdate(), uid(), xpos, ypos), append = TRUE, file = output)
   cat(sprintf(' <command>%s</command>\n', deparseTreeExp(e)), append = TRUE, file = output)
+  cat(" <packages/>\n", append = TRUE, file = output)
   cat(" <property/>\n", append = TRUE, file = output)
   cat(' <option type="com.ef_prime.rflow.node.base.LoopNodeModel">\n', append = TRUE, file = output)
   cat('  <entry key="loop">repeat</entry>\n', append = TRUE, file = output)
@@ -268,6 +282,7 @@ SubflowNodeModel <- function(e, w) {
   output <- w$get("output")
   cat(sprintf('<node id="%d" date="%s" uid="%s" x="%d" y="%d">\n', w$get("nodeID"), crdate(), uid(), xpos, ypos), append = TRUE, file = output)
   cat(sprintf(' <command>%s</command>\n', deparseTreeExp(e)), append = TRUE, file = output)
+  cat(" <packages/>\n", append = TRUE, file = output)
   cat(" <property/>\n", append = TRUE, file = output)
   cat(' <option type="com.ef_prime.rflow.node.base.SubflowNodeModel">\n', append = TRUE, file = output)
 
@@ -286,6 +301,7 @@ FreeNodeModel <- function(e, w) {
 
   cat(sprintf('<node id="%d" date="%s" uid="%s" x="%d" y="%d">\n', w$get("nodeID"), crdate(), uid(), xpos, ypos), append = TRUE, file = output)
   cat(sprintf(' <command>%s</command>\n', deparseTreeExp(e)), append = TRUE, file = output)
+  cat(" <packages/>\n", append = TRUE, file = output)
   cat(" <property/>\n", append = TRUE, file = output)
   cat(' <option type="com.ef_prime.rflow.node.base.FreeNodeModel"/>\n', append = TRUE, file = output)
   cat('</node>\n', append = TRUE, file = output)
@@ -299,6 +315,7 @@ TunnelNodeModel <- function(type = "in", w) {
 
   cat(sprintf('<node id="%d" date="%s" uid="%s" x="%d" y="%d">\n', w$get("nodeID"), crdate(), uid(), xpos, ypos), append = TRUE, file = output)
   cat(' <command></command>\n', append = TRUE, file = output)
+  cat(" <packages/>\n", append = TRUE, file = output)
   cat(' <property/>\n', append = TRUE, file = output)
   cat(' <option type="com.ef_prime.rflow.node.base.TunnelNodeModel">\n', append = TRUE, file = output)
   cat(sprintf('  <entry key="io">%s</entry>\n', type), append = TRUE, file = output)
@@ -328,22 +345,9 @@ Preamble <- function(output) {
 
 Settings <- function(output) {
   cat('  <setting>\n', append = TRUE, file = output)
-  cat('   <entry key="OUTPUT_DIRECTORY"></entry>\n', append = TRUE, file = output)
-  cat('   <entry key="SAVE_CACHE">false</entry>\n', append = TRUE, file = output)
-  cat('   <entry key="FONT_SCREEN">monospace</entry>\n', append = TRUE, file = output)
-  cat('   <entry key="TEXT_ENCODING">UTF-8</entry>\n', append = TRUE, file = output)
-  cat('   <entry key="LOAD_CACHE">false</entry>\n', append = TRUE, file = output)
-  cat('   <entry key="IGNORE_ERROR">false</entry>\n', append = TRUE, file = output)
-  cat('   <entry key="SAVE_WORKSPACE"></entry>\n', append = TRUE, file = output)
-  cat('   <entry key="OUTPUT_REPORT">true</entry>\n', append = TRUE, file = output)
-  cat('   <entry key="RUN_TYPE">2</entry>\n', append = TRUE, file = output)
-  cat('   <entry key="OUTPUT_ITEMS">script</entry>\n', append = TRUE, file = output)
   cat('   <entry key="USE_GRID">true</entry>\n', append = TRUE, file = output)
-  cat('   <entry key="REPORT_TYPES">pdf,html</entry>\n', append = TRUE, file = output)
   cat('   <entry key="FOLDER">empty</entry>\n', append = TRUE, file = output)
   cat('   <entry key="GRID_DISTANCE2">10</entry>\n', append = TRUE, file = output)
-  cat('   <entry key="IMAGE_SIZE">480,480</entry>\n', append = TRUE, file = output)
-  cat('   <entry key="FONT_OTHER">sans-serif</entry>\n', append = TRUE, file = output)
   cat('  </setting>\n', append = TRUE, file = output)
   cat('<properties>\n', append = TRUE, file = output)
   cat('  <v key="packages"/>\n', append = TRUE, file = output)
@@ -353,9 +357,7 @@ Settings <- function(output) {
 Task <- function(output) {
   cat(' <task>\n', append = TRUE, file = output)
   cat('  <taskgroup>\n', append = TRUE, file = output)
-  cat('   <taskproperty>\n', append = TRUE, file = output)
-  cat('    <entry key="title">Task</entry>\n', append = TRUE, file = output)
-  cat('   </taskproperty>\n', append = TRUE, file = output)
+  cat('   <taskproperty/>\n', append = TRUE, file = output)
   cat('  </taskgroup>\n', append = TRUE, file = output)
   cat(' </task>\n', append = TRUE, file = output)
 }
@@ -416,6 +418,40 @@ extract_args2 <- function(s) {
   }, character(1))
 
   paste(out, collapse = ", ")
+}
+
+args_to_xml <- function(input) {
+  # Split by commas but not inside double quotes
+  parts <- strsplit(input, "(?<!\\\\),", perl = TRUE)[[1]]
+  parts <- trimws(parts)
+  
+  # Process each part
+  results <- lapply(parts, function(p) {
+    # Sprawdź czy jest "="
+    if (grepl("=", p)) {
+      kv <- strsplit(p, "=", fixed = TRUE)[[1]]
+      key <- trimws(kv[1])
+      value <- trimws(kv[2])
+    } else {
+      key <- trimws(p)
+      value <- ""
+    }
+    list(key = key, value = value)
+  })
+  
+  # Build XML chunk
+  xml_rows <- unlist(
+    lapply(results, function(r) {
+      sprintf(
+        '  <row>\n    <v>%s</v>\n    <v>%s</v>\n  </row>',
+        r$key,
+        r$value
+      )
+    })
+  )
+  
+  xml <- c('<v key="args">', xml_rows, '</v>')
+  paste(xml, collapse = "\n")
 }
 
 ReplaceChr <- function(text) {
